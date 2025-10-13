@@ -1,0 +1,36 @@
+@import "tailwindcss";
+
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../storage/framework/views/*.php';
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* Custom style colors */
+:root {
+    --color-primary: #b62127; /* Maroon */
+    --color-secondary: #006a4e; /* Dark Green */
+    --color-accent: #add8e6; /* Light Blue */
+    --color-background: #ffffff; /* Light Gray */
+    --color-text: #1e1e1e; /* Dark Gray */
+    --color-border: #e5e7eb; /* Gray */
+    --color-hover: #3b82f6; /* Blue-500 */
+}
+/* Custom font family */
+body {
+    font-family: "Inter", sans-serif;
+    background-color: var(--color-background);
+    color: var(--color-text);
+}
+
+.bannerSwiper {
+    width: 100%;
+    /* Atur tinggi slider sesuai kebutuhan, misal 400px atau 50vh */
+    height: 500px;
+}
+
+.bannerSwiper .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Memastikan gambar menutupi area tanpa distorsi */
+}
