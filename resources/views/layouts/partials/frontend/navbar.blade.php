@@ -9,7 +9,7 @@
             </div>
 
             <!-- Desktop Navigation -->
-            <div class="hidden md:flex space-x-6">
+            <div class="hidden sm:flex space-x-6">
                 <a href="{{ route('frontend.home') }}" 
                    class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium 
                           {{ request()->routeIs('frontend.home') ? 'text-red-600' : '' }}">
@@ -33,7 +33,7 @@
             </div>
 
             <!-- Login Button -->
-            <div class="hidden md:flex items-center">
+            <div class="hidden sm:flex items-center">
                 <a href="{{ route('login') }}" 
                    class="px-8 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition duration-150 ease-in-out text-sm">
                     Login
@@ -41,7 +41,7 @@
             </div>
 
             <!-- Mobile menu button -->
-            <div class="md:hidden flex items-center">
+            <div class="sm:hidden flex items-center">
                 <button @click="open = !open" 
                         class="inline-flex items-center justify-center p-2 rounded-md text-gray-700 hover:text-red-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500">
                     <svg class="h-6 w-6" x-show="!open" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@
     </div>
 
     <!-- Mobile menu -->
-    <div x-show="open" class="md:hidden">
+    <div x-show="open" class="sm:hidden">
         <div class="px-2 pt-2 pb-3 space-y-1">
             <a href="{{ route('frontend.home') }}" 
                class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-100

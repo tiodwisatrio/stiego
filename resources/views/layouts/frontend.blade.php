@@ -15,36 +15,28 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
-    <!-- CSS -->
-    <link rel="stylesheet" href="{{ asset('css/app.css') }}?v={{ time() }}">
-
-    <!-- JS -->
-    <script src="{{ asset('js/app.js') }}?v={{ time() }}"></script>
-    
-    <!-- Alpine.js -->
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    
-    <!-- Styles -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-    
-    <!-- Fallback styles untuk production -->
-    @production
+    <!-- Scripts -->
+    @if (file_exists(public_path('build/manifest.json')))
+        {{-- Production: Load dari build --}}
         @php
-            $manifestPath = public_path('build/manifest.json');
-            $manifest = json_decode(file_get_contents($manifestPath), true);
-            $cssFile = $manifest['resources/css/app.css']['file'];
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+            $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
+            $jsFile = $manifest['resources/js/app.js']['file'] ?? null;
         @endphp
-        <link rel="stylesheet" href="{{ asset('build/' . $cssFile) }}">
-    @endproduction
-    
-    <!-- Prevent FOUC -->
-    <script>
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
-    </script>
+        @if($cssFile)
+            <link rel="stylesheet" href="/build/{{ $cssFile }}">
+        @endif
+        @if($jsFile)
+            <script type="module" src="/build/{{ $jsFile }}"></script>
+        @endif
+    @elseif (file_exists(public_path('hot')))
+        {{-- Development: Vite dev server --}}
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+        {{-- Fallback: Direct load --}}
+        <link rel="stylesheet" href="/build/assets/app-Yn1F0h7W.css">
+        <script type="module" src="/build/assets/app-CXDpL9bK.js"></script>
+    @endif
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-50">

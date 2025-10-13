@@ -12,10 +12,22 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-
-    <!-- Alpine.js -->
-    <script src="//unpkg.com/alpinejs" defer></script>
+    @if (file_exists(public_path('build/manifest.json')))
+        @php
+            $manifest = json_decode(file_get_contents(public_path('build/manifest.json')), true);
+            $cssFile = $manifest['resources/css/app.css']['file'] ?? null;
+            $jsFile = $manifest['resources/js/app.js']['file'] ?? null;
+        @endphp
+        @if($cssFile)
+            <link rel="stylesheet" href="/build/{{ $cssFile }}">
+        @endif
+        @if($jsFile)
+            <script type="module" src="/build/{{ $jsFile }}"></script>
+        @endif
+    @else
+        <link rel="stylesheet" href="/build/assets/app-Yn1F0h7W.css">
+        <script type="module" src="/build/assets/app-CXDpL9bK.js"></script>
+    @endif
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-50">
