@@ -20,9 +20,9 @@
                           {{ request()->routeIs('frontend.about') ? 'text-red-600' : '' }}">
                     About
                 </a>
-                <a href="{{ route('frontend.products') }}" 
+                <a href="{{ route('frontend.products.index') }}" 
                    class="text-gray-700 hover:text-red-600 px-3 py-2 rounded-md text-sm font-medium
-                          {{ request()->routeIs('frontend.products') ? 'text-red-600' : '' }}">
+                          {{ request()->routeIs('frontend.products.*') ? 'text-red-600' : '' }}">
                     Products
                 </a>
                 <a href="{{ route('frontend.contact') }}" 
@@ -69,9 +69,9 @@
                       {{ request()->routeIs('frontend.about') ? 'text-red-600 bg-gray-100' : '' }}">
                 About
             </a>
-            <a href="{{ route('frontend.products') }}" 
-               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-100
-                      {{ request()->routeIs('frontend.products') ? 'text-red-600 bg-gray-100' : '' }}">
+            <a href="{{ route('frontend.products.index') }}" 
+               class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-gray-50
+                      {{ request()->routeIs('frontend.products.*') ? 'text-red-600 bg-gray-100' : '' }}">
                 Products
             </a>
             <a href="{{ route('frontend.contact') }}" 

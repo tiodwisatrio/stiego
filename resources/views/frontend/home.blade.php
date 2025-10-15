@@ -13,7 +13,7 @@
                 Kami punya solusi nya, tunjukan karakter kamu lewat outfit dari stiego, dan style yang nunjukin gaya kamu.
             </p>
             <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-6">
-                <a href="{{ route('frontend.products') }}" 
+                <a href="{{ route('frontend.products.index') }}" 
                    class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#B62127] text-white font-medium hover:bg-[#FF0000] transition-colors text-center">
                     Belanja Sekarang
                 </a>
@@ -47,11 +47,16 @@
     </div>
 
 <!-- Banner Slider Section -->
+<!-- Banner Slider Section -->
 <div id="banner-slider" class="relative py-6 md:py-8"
      x-data="{ 
         currentIndex: 0, 
         banners: {{ json_encode($banners) }},
         autoplayInterval: null,
+        startX: 0,
+        endX: 0,
+        isDragging: false,
+        
         startAutoplay() {
             this.autoplayInterval = setInterval(() => this.next(), 5000)
         },
@@ -63,6 +68,25 @@
         },
         prev() {
             this.currentIndex = (this.currentIndex - 1 + this.banners.length) % this.banners.length
+        },
+        handleStart(e) {
+            this.stopAutoplay()
+            this.isDragging = true
+            this.startX = e.touches ? e.touches[0].clientX : e.clientX
+        },
+        handleMove(e) {
+            if (!this.isDragging) return
+            this.endX = e.touches ? e.touches[0].clientX : e.clientX
+        },
+        handleEnd() {
+            if (!this.isDragging) return
+            const distance = this.endX - this.startX
+            if (Math.abs(distance) > 50) {
+                if (distance < 0) this.next()
+                else this.prev()
+            }
+            this.isDragging = false
+            this.startAutoplay()
         }
      }"
      x-init="startAutoplay()"
@@ -71,14 +95,22 @@
 
     <div class="overflow-hidden rounded-lg relative w-full">
         <!-- Slides Container -->
-        <div class="flex transition-transform duration-500 ease-in-out w-full"
-             :style="`transform: translateX(-${currentIndex * 100}%)`">
+        <div class="flex transition-transform duration-500 ease-in-out w-full select-none"
+             :style="`transform: translateX(-${currentIndex * 100}%);`"
+             @mousedown="handleStart($event)"
+             @mousemove="handleMove($event)"
+             @mouseup="handleEnd()"
+             @mouseleave="isDragging && handleEnd()"
+             @touchstart="handleStart($event)"
+             @touchmove="handleMove($event)"
+             @touchend="handleEnd()">
+             
             @foreach ($banners as $index => $banner)
             <div class="flex-shrink-0 w-full">
                 <div class="w-full aspect-[16/9] sm:aspect-[16/7] md:aspect-[16/6] lg:aspect-[16/5]">
                     <img src="{{ Storage::url($banner->banner_image) }}" 
                          alt="{{ $banner->banner_title }}" 
-                         class="w-full h-full object-contain rounded-lg">
+                         class="w-full h-full object-contain rounded-lg pointer-events-none">
                 </div>
             </div>
             @endforeach
@@ -114,44 +146,8 @@
 
 
 
-    <!-- Featured Categories -->
-    <div class="py-16">
-        <h2 class="text-3xl font-bold text-center mb-12">Kategori Populer</h2>
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-            @foreach(['T-Shirt', 'Hoodie', 'Pants', 'Accessories'] as $category)
-            <a href="#" class="group">
-                <div class="relative overflow-hidden rounded-lg aspect-square">
-                    <img src="{{ asset('images/categories/category-' . strtolower($category) . '.jpg') }}" 
-                         alt="{{ $category }}"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
-                        <span class="text-white text-xl font-semibold">{{ $category }}</span>
-                    </div>
-                </div>
-            </a>
-            @endforeach
-        </div>
-    </div>
 
     <!-- New Arrivals -->
-    <div class="py-16">
-        <h2 class="text-3xl font-bold text-center mb-12">New Arrivals</h2>
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
-            @for($i = 1; $i <= 4; $i++)
-            <div class="group">
-                <div class="relative overflow-hidden rounded-lg aspect-square mb-4">
-                    <img src="{{ asset('images/products/new-' . $i . '.jpg') }}" 
-                         alt="New Arrival {{ $i }}"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
-                    <div class="absolute top-2 right-2 bg-[#B62127] text-white px-2 py-1 rounded text-sm">
-                        New
-                    </div>
-                </div>
-                <h3 class="text-lg font-semibold">New Product {{ $i }}</h3>
-                <p class="text-[#B62127] font-bold mt-2">Rp 299.000</p>
-            </div>
-            @endfor
-        </div>
-    </div>
+    
 </main>
 @endsection

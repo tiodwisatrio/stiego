@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Route;
 // Frontend Routes
 Route::get('/', [HomeController::class, 'index'])->name('frontend.home');
 Route::get('/about', [AboutController::class, 'index'])->name('frontend.about');
-Route::get('/products', [ProductController::class, 'index'])->name('frontend.products');
+Route::get('/products', [ProductController::class, 'index'])->name('frontend.products.index');
+Route::get('/products/{product}', [ProductController::class, 'show'])->name('frontend.products.show');
 Route::get('/contact', [ContactController::class, 'index'])->name('frontend.contact');
 Route::post('/contact', [ContactController::class, 'store'])->name('frontend.contact.store');

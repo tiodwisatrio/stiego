@@ -35,7 +35,7 @@ export default {
                 sans: ["Figtree", ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: "#B62127", // Bisa dipakai di slider misal bg-primary
+                primary: "#b62127", // Bisa dipakai di slider misal bg-primary
             },
         },
     },

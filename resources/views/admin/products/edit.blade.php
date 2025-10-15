@@ -23,16 +23,65 @@
                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
             </div>
 
-            <div>
-                <label class="block text-sm font-medium text-gray-700">Category</label>
-                <select name="category_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                    <option value="">Select Category</option>
-                    @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id', $product->category_id) == $category->id ? 'selected' : '' }}>
-                            {{ $category->category_name }}
+            <!-- Category Selection (2-level dropdown) -->
+            <div x-data="categorySelector({{ $selectedParentId }}, {{ $product->category_id }}, {{ json_encode($subCategories) }})">
+                <label for="parent_category" class="block text-sm font-medium text-gray-700">Parent Category</label>
+                <select id="parent_category" 
+                        x-model="selectedParent" 
+                        @change="loadSubCategories()"
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
+                        required>
+                    <option value="">Select Parent Category</option>
+                    @foreach($parentCategories as $parent)
+                        <option value="{{ $parent->id }}" {{ $selectedParentId == $parent->id ? 'selected' : '' }}>
+                            {{ $parent->category_name }}
                         </option>
                     @endforeach
                 </select>
+                <p class="mt-1 text-xs text-gray-500">Pilih kategori utama terlebih dahulu</p>
+
+                <!-- Sub Category Dropdown -->
+                <div x-show="selectedParent && subCategories.length > 0" class="mt-4">
+                    <label for="category_id" class="block text-sm font-medium text-gray-700">Sub Category</label>
+                    <select name="category_id" 
+                            id="category_id" 
+                            x-model="selectedSub"
+                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500" 
+                            required>
+                        <option value="">Select Sub Category</option>
+                        <template x-for="sub in subCategories" :key="sub.id">
+                            <option :value="sub.id" x-text="sub.category_name" :selected="sub.id == selectedSub"></option>
+                        </template>
+                    </select>
+                    <p class="mt-1 text-xs text-gray-500">Product akan disimpan di sub-kategori ini</p>
+                </div>
+
+                <!-- Loading State -->
+                <div x-show="loading" class="mt-4">
+                    <p class="text-sm text-gray-500">Loading sub-categories...</p>
+                </div>
+
+                <!-- No Sub Categories Warning -->
+                <div x-show="selectedParent && !loading && subCategories.length === 0" class="mt-4">
+                    <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                        <div class="flex">
+                            <div class="flex-shrink-0">
+                                <svg class="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                                </svg>
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm text-yellow-700">
+                                    Kategori ini belum memiliki sub-kategori. Silakan tambahkan sub-kategori terlebih dahulu di menu Categories.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @error('category_id')
+                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                @enderror
             </div>
         </div>
 
@@ -99,8 +148,8 @@
 
             <div id="existingImages" class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-4">
                 @foreach($product->images as $image)
-                    <div class="relative border rounded-lg overflow-hidden group" data-image-id="{{ $image->id }}">
-                        <img src="{{ Storage::url($image->image_path) }}" class="w-full h-32 object-cover" alt="">
+                    <div class="relative border rounded-lg overflow-hidden group" data-image-id="{{ $image->id }}" style="padding-bottom: 100%;">
+                        <img src="{{ Storage::url($image->image_path) }}" class="absolute inset-0 w-full h-full object-cover" alt="">
                         <button type="button" class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75" onclick="deleteImage({{ $image->id }}, this)">✕</button>
                     </div>
                 @endforeach
@@ -130,6 +179,40 @@
 
 @push('scripts')
 <script>
+// Alpine.js Component untuk Category Selector (Edit Mode)
+function categorySelector(initialParent, initialSub, initialSubCategories) {
+    return {
+        selectedParent: initialParent,
+        selectedSub: initialSub,
+        subCategories: initialSubCategories || [],
+        loading: false,
+
+        async loadSubCategories() {
+            if (!this.selectedParent) {
+                this.subCategories = [];
+                this.selectedSub = '';
+                return;
+            }
+
+            this.loading = true;
+            try {
+                const response = await fetch(`/admin/categories/${this.selectedParent}/subcategories`);
+                this.subCategories = await response.json();
+                
+                // Reset selected sub jika parent berubah (kecuali saat init)
+                if (this.selectedParent != initialParent) {
+                    this.selectedSub = '';
+                }
+            } catch (error) {
+                console.error('Error loading sub-categories:', error);
+                this.subCategories = [];
+            } finally {
+                this.loading = false;
+            }
+        }
+    }
+}
+
 function addVariant(size = '', color = '', stock = '', price = '') {
     const container = document.getElementById('variants-container');
     const div = document.createElement('div');
@@ -153,8 +236,9 @@ document.getElementById('new_images').addEventListener('change', function(e) {
         reader.onload = ev => {
             const wrapper = document.createElement('div');
             wrapper.className = 'relative border rounded-lg overflow-hidden group';
+            wrapper.style.paddingBottom = '100%';
             wrapper.innerHTML = `
-                <img src="${ev.target.result}" class="w-full h-32 object-cover" alt="">
+                <img src="${ev.target.result}" class="absolute inset-0 w-full h-full object-cover" alt="">
                 <button type="button" class="absolute top-2 right-2 bg-black bg-opacity-50 text-white rounded-full p-1 hover:bg-opacity-75" onclick="this.closest('.group').remove()">✕</button>
             `;
             previewContainer.appendChild(wrapper);

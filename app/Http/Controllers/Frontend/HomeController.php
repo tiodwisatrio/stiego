@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Banner;
+use App\Models\Product;
 use Illuminate\View\View;
 
 class HomeController extends Controller
@@ -27,7 +28,6 @@ class HomeController extends Controller
     public function featuredProducts(): View
     {
         $featuredProducts = Product::where('is_featured', true)
-            ->where('is_active', true)
             ->latest()
             ->take(8)
             ->get();

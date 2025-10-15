@@ -10,13 +10,20 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = Category::latest()->paginate(10);
+        // Ambil kategori dengan relasi parent dan children
+        $categories = Category::with(['parent', 'children'])
+            ->parents() // Hanya parent categories
+            ->latest()
+            ->paginate(10);
+        
         return view('admin.categories.index', compact('categories'));
     }
 
     public function create()
     {
-        return view('admin.categories.create');
+        // Ambil semua parent categories untuk dropdown
+        $parentCategories = Category::whereNull('parent_id')->get();
+        return view('admin.categories.create', compact('parentCategories'));
     }
 
     public function store(Request $request)
@@ -24,6 +31,7 @@ class CategoryController extends Controller
         $request->validate([
             'category_name' => 'required|string|max:255|unique:categories,category_name',
             'category_slug' => 'required|string|max:255|unique:categories,category_slug',
+            'parent_id' => 'nullable|exists:categories,id',
         ]);
 
         Category::create($request->all());
@@ -32,7 +40,12 @@ class CategoryController extends Controller
 
     public function edit(Category $category)
     {
-        return view('admin.categories.edit', compact('category'));
+        // Ambil parent categories kecuali kategori saat ini (prevent circular reference)
+        $parentCategories = Category::whereNull('parent_id')
+            ->where('id', '!=', $category->id)
+            ->get();
+        
+        return view('admin.categories.edit', compact('category', 'parentCategories'));
     }
 
     public function update(Request $request, Category $category)
@@ -40,6 +53,7 @@ class CategoryController extends Controller
         $request->validate([
             'category_name' => 'required|string|max:255|unique:categories,category_name,'.$category->id,
             'category_slug' => 'required|string|max:255|unique:categories,category_slug,'.$category->id,
+            'parent_id' => 'nullable|exists:categories,id|not_in:'.$category->id, // Prevent self as parent
         ]);
 
         $category->update($request->all());

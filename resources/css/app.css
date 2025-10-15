@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 /* Custom style colors */
 :root {
     --color-primary: #b62127; /* Maroon */
@@ -18,6 +17,10 @@ body {
     font-family: "Inter", sans-serif;
     background-color: var(--color-background);
     color: var(--color-text);
+}
+
+.text-primary {
+    color: var(--color-primary);
 }
 
 .bannerSwiper {

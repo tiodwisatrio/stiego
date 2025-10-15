@@ -50,8 +50,16 @@ class ProductController extends Controller
 
     public function create()
     {
-        $categories = Category::all();
-        return view('admin.products.create', compact('categories'));
+        // Hanya ambil parent categories untuk dropdown pertama
+        $parentCategories = Category::whereNull('parent_id')->get();
+        return view('admin.products.create', compact('parentCategories'));
+    }
+
+    // API endpoint untuk mendapatkan sub-categories berdasarkan parent
+    public function getSubCategories($parentId)
+    {
+        $subCategories = Category::where('parent_id', $parentId)->get();
+        return response()->json($subCategories);
     }
 
     public function store(Request $request)
@@ -68,6 +76,9 @@ class ProductController extends Controller
             'variant_price_override' => 'nullable|array',
             'images' => 'nullable|array',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
+        ], [
+            'category_id.required' => 'Please select a sub-category for this product.',
+            'category_id.exists' => 'The selected sub-category does not exist.'
         ]);
 
         $product = Product::create($request->all());
@@ -103,9 +114,14 @@ class ProductController extends Controller
 
     public function edit(Product $product)
     {
-        $categories = Category::all();
-        $product->load('variants', 'images');
-        return view('admin.products.edit', compact('product', 'categories'));
+        $parentCategories = Category::whereNull('parent_id')->get();
+        $product->load('variants', 'images', 'category.parent');
+        
+        // Ambil parent category dari product category
+        $selectedParentId = $product->category->parent_id ?? $product->category_id;
+        $subCategories = Category::where('parent_id', $selectedParentId)->get();
+        
+        return view('admin.products.edit', compact('product', 'parentCategories', 'subCategories', 'selectedParentId'));
     }
 
      public function update(Request $request, Product $product)

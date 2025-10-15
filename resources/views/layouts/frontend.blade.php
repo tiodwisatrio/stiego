@@ -34,15 +34,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
         {{-- Fallback: Direct load --}}
-        <link rel="stylesheet" href="/build/assets/app-Yn1F0h7W.css">
-        <script type="module" src="/build/assets/app-CXDpL9bK.js"></script>
+        <link rel="stylesheet" href="/build/assets/app-CjNikGHE.css">
+        <link rel="stylesheet" href="/build/assets/app-C8ec8cn4.css">
+        <script type="module" src="/build/assets/app-knBiJOF6.js"></script>
     @endif
 </head>
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-50">
         @include('layouts.partials.frontend.navbar')
         
-        <main class="px-8">
+        <main class="px-4">
             @yield('content')
         </main>
         
