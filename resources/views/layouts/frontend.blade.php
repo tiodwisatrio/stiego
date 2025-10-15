@@ -50,6 +50,9 @@
         @include('layouts.partials.frontend.footer')
     </div>
     
+    <!-- Toast Notification -->
+    @include('components.toast-notification')
+    
     @stack('scripts')
 </body>
 <script>

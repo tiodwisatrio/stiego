@@ -181,10 +181,8 @@
                     <div class="flex items-center gap-3">
                         <button type="button"
                                 @click="decreaseQuantity()"
-                                class="w-10 h-10 flex items-center justify-center bg-gray-200 hover:bg-gray-300 rounded-lg transition px-5 py-2.5">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 12H4"/>
-                            </svg>
+                                class="w-10 h-10 flex items-center justify-center text-gray-900 bg-gray-200 hover:bg-gray-300 rounded-lg transition px-5 py-2.5">
+                            -
                         </button>
                         <input type="number" 
                                x-model="quantity"
@@ -194,9 +192,7 @@
                         <button type="button"
                                 @click="increaseQuantity()"
                                 class="w-10 h-10 flex items-center justify-center bg-red-600 hover:bg-red-700 text-white rounded-lg transition px-5 py-2.5">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
-                            </svg>
+                            +
                         </button>
                     </div>
                 </div>
@@ -310,16 +306,52 @@ function productDetail() {
                 return;
             }
 
-            // TODO: Implement add to cart logic
-            console.log({
-                product_id: {{ $product->id }},
-                variant_id: this.selectedVariant?.id,
-                size: this.selectedSize,
-                color: this.selectedColor,
-                quantity: this.quantity
-            });
+            // Submit form
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '{{ route("frontend.cart.add") }}';
+            
+            const csrfInput = document.createElement('input');
+            csrfInput.type = 'hidden';
+            csrfInput.name = '_token';
+            csrfInput.value = '{{ csrf_token() }}';
+            form.appendChild(csrfInput);
 
-            alert('Product berhasil ditambahkan ke cart!');
+            const productInput = document.createElement('input');
+            productInput.type = 'hidden';
+            productInput.name = 'product_id';
+            productInput.value = {{ $product->id }};
+            form.appendChild(productInput);
+
+            if (this.selectedVariant) {
+                const variantInput = document.createElement('input');
+                variantInput.type = 'hidden';
+                variantInput.name = 'variant_id';
+                variantInput.value = this.selectedVariant.id;
+                form.appendChild(variantInput);
+            }
+
+            const sizeInput = document.createElement('input');
+            sizeInput.type = 'hidden';
+            sizeInput.name = 'size';
+            sizeInput.value = this.selectedSize;
+            form.appendChild(sizeInput);
+
+            const colorInput = document.createElement('input');
+            colorInput.type = 'hidden';
+            colorInput.name = 'color';
+            colorInput.value = this.selectedColor;
+            form.appendChild(colorInput);
+
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'hidden';
+            quantityInput.name = 'quantity';
+            quantityInput.value = this.quantity;
+            form.appendChild(quantityInput);
+
+            document.body.appendChild(form);
+            form.submit();
+
         }
     }
 }

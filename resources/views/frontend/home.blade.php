@@ -107,7 +107,7 @@
              
             @foreach ($banners as $index => $banner)
             <div class="flex-shrink-0 w-full">
-                <div class="w-full aspect-[16/9] sm:aspect-[16/7] md:aspect-[16/6] lg:aspect-[16/5]">
+                <div class="w-full aspect-[16/9] sm:aspect-[16/7] md:aspect-[16/6] lg:aspect-[16/5] flex flex-row gap-3">
                     <img src="{{ Storage::url($banner->banner_image) }}" 
                          alt="{{ $banner->banner_title }}" 
                          class="w-full h-full object-contain rounded-lg pointer-events-none">

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('order_name');
             $table->string('order_contact');
-            $table->string('order_email');
+            $table->string('order_email')->nullable();
             $table->string('order_province');
             $table->string('order_city');
             $table->text('order_address');

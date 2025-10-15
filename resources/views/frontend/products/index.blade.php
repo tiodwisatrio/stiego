@@ -11,91 +11,113 @@
         </div>
 
         <!-- Filter & Search Section -->
-        <div class="bg-white rounded-lg shadow-sm p-3 sm:p-4 lg:p-6 mb-4 sm:mb-6">
-            <form method="GET" action="{{ route('frontend.products.index') }}" class="space-y-3 sm:space-y-4">
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-                    
-                    <!-- Search -->
-                    <div class="lg:col-span-2">
-                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Search Product</label>
-                        <input type="text" 
-                               name="search" 
-                               value="{{ request('search') }}"
-                               placeholder="Search by name..."
-                               class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                    </div>
+<div 
+    x-data="{ open: false }" 
+    class="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6"
+>
+    <!-- Mobile Toggle Button -->
+    <div class="flex justify-between items-center sm:hidden">
+        <h2 class="text-base font-semibold text-gray-800">Filter & Sort</h2>
+        <button 
+            @click="open = !open" 
+            class="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+            <span x-text="open ? 'Close' : 'Open'"></span>
+        </button>
+    </div>
 
-                    <!-- Category Filter -->
-                    <div>
-                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Category</label>
-                        <select name="category" 
-                                class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                            <option value="">All Categories</option>
-                            @foreach($parentCategories as $parent)
-                                <optgroup label="{{ $parent->category_name }}">
-                                    <option value="{{ $parent->id }}" {{ request('category') == $parent->id ? 'selected' : '' }}>
-                                        {{ $parent->category_name }} (All)
+    <!-- Filter Form -->
+    <div 
+        x-show="open || window.innerWidth >= 640" 
+        x-transition 
+        x-cloak
+        class="mt-4 sm:mt-0"
+    >
+        <form method="GET" action="{{ route('frontend.products.index') }}" class="space-y-3 sm:space-y-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                
+                <!-- Search -->
+                <div class="lg:col-span-2">
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Search Product</label>
+                    <input type="text" 
+                           name="search" 
+                           value="{{ request('search') }}"
+                           placeholder="Search by name..."
+                           class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+
+                <!-- Category Filter -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Category</label>
+                    <select name="category" 
+                            class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="">All Categories</option>
+                        @foreach($parentCategories as $parent)
+                            <optgroup label="{{ $parent->category_name }}">
+                                <option value="{{ $parent->id }}" {{ request('category') == $parent->id ? 'selected' : '' }}>
+                                    {{ $parent->category_name }} (All)
+                                </option>
+                                @foreach($parent->children as $child)
+                                    <option value="{{ $child->id }}" {{ request('category') == $child->id ? 'selected' : '' }}>
+                                        └─ {{ $child->category_name }}
                                     </option>
-                                    @foreach($parent->children as $child)
-                                        <option value="{{ $child->id }}" {{ request('category') == $child->id ? 'selected' : '' }}>
-                                            └─ {{ $child->category_name }}
-                                        </option>
-                                    @endforeach
-                                </optgroup>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    <!-- Price Range -->
-                    <div>
-                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Min Price</label>
-                        <input type="number" 
-                               name="price_min" 
-                               value="{{ request('price_min') }}"
-                               placeholder="Rp 0"
-                               class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Max Price</label>
-                        <input type="number" 
-                               name="price_max" 
-                               value="{{ request('price_max') }}"
-                               placeholder="Rp 999,999"
-                               class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                    </div>
+                                @endforeach
+                            </optgroup>
+                        @endforeach
+                    </select>
                 </div>
 
-                <!-- Sort & Actions -->
-                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-3 pt-2">
-                    <div class="flex items-center gap-2 sm:gap-3">
-                        <label class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Sort:</label>
-                        <select name="sort" 
-                                onchange="this.form.submit()"
-                                class="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
-                            <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
-                            <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
-                            <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
-                            <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name: A-Z</option>
-                        </select>
-                    </div>
-
-                    <div class="flex gap-2 w-full sm:w-auto">
-                        <button type="submit" 
-                                class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-xs sm:text-sm">
-                            Apply
-                        </button>
-                        <a href="{{ route('frontend.products.index') }}" 
-                           class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-xs sm:text-sm">
-                            Reset
-                        </a>
-                    </div>
+                <!-- Price Range -->
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Min Price</label>
+                    <input type="number" 
+                           name="price_min" 
+                           value="{{ request('price_min') }}"
+                           placeholder="Rp 0"
+                           class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
                 </div>
-            </form>
-        </div>
+
+                <div>
+                    <label class="block text-xs sm:text-sm font-medium text-gray-700 mb-1 sm:mb-2">Max Price</label>
+                    <input type="number" 
+                           name="price_max" 
+                           value="{{ request('price_max') }}"
+                           placeholder="Rp 999,999"
+                           class="w-full px-3 sm:px-4 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <!-- Sort & Actions -->
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-2">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <label class="text-xs sm:text-sm font-medium text-gray-700 whitespace-nowrap">Sort:</label>
+                    <select name="sort" 
+                            onchange="this.form.submit()"
+                            class="flex-1 sm:flex-none px-2 sm:px-3 py-1.5 border border-gray-300 rounded-lg text-xs sm:text-sm focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="latest" {{ request('sort') == 'latest' ? 'selected' : '' }}>Latest</option>
+                        <option value="price_low" {{ request('sort') == 'price_low' ? 'selected' : '' }}>Price: Low to High</option>
+                        <option value="price_high" {{ request('sort') == 'price_high' ? 'selected' : '' }}>Price: High to Low</option>
+                        <option value="name" {{ request('sort') == 'name' ? 'selected' : '' }}>Name: A-Z</option>
+                    </select>
+                </div>
+
+                <div class="flex gap-2 w-full sm:w-auto">
+                    <button type="submit" 
+                            class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-xs sm:text-sm">
+                        Apply
+                    </button>
+                    <a href="{{ route('frontend.products.index') }}" 
+                       class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-xs sm:text-sm">
+                        Reset
+                    </a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
 
         <!-- Results Info -->
-        <div class="mb-3 sm:mb-4 text-xs sm:text-sm text-gray-600">
+        <div class="text-xs sm:text-sm text-gray-600" style="margin-bottom: 10px;">
             Showing <span class="font-semibold">{{ $products->firstItem() ?? 0 }}</span> to 
             <span class="font-semibold">{{ $products->lastItem() ?? 0 }}</span> of 
             <span class="font-semibold">{{ $products->total() }}</span> products
@@ -143,7 +165,7 @@
                         <h3 class="text-xs sm:text-sm lg:text-xl font-semibold text-gray-900 pt-2 sm:pt-4 mb-1 sm:mb-2 h-8 sm:h-10 lg:h-12">
                             <a href="{{ route('frontend.products.show', $product) }}" 
                                class="hover:text-red-600 transition block overflow-hidden"
-                               style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1rem;">
+                               style="display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3rem;">
                                 {{ $product->product_name }}
                             </a>
                         </h3>

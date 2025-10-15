@@ -72,7 +72,7 @@
 
         <!-- Values Section -->
         <div class="mt-24">
-            <h2 class="text-3xl font-semibold text-center text-gray-900 mb-12">Nilai Kami</h2>
+            <h2 class="text-3xl font-semibold text-center text-gray-900 mb-12">Our Values</h2>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                     <div class="text-center p-6">
                         <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -109,51 +109,6 @@
         </div>
         <!-- Full-bleed Promo Banner (Tailwind) -->
         <!-- Stiego Minimal Banner -->
-            <section class="relative md:mt-24 mt-16 md:mb-24 mb-16">
-            <div class="w-screen left-1/2 relative -translate-x-1/2">
-                <div class="bg-red-900 h-80">
-                
-                <!-- Grid Layout Container -->
-                <div class="h-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
-                    
-                    <!-- Left: Brand Info -->
-                    <div class="space-y-6">
-                    <div>
-                        <p class="text-red-700 text-sm font-medium tracking-widest">AUTHENTIC STREETWEAR</p>
-                    </div>
-                    
-                    <div>
-                        <h2 class="text-2xl md:text-3xl font-light mb-4">
-                        Fashion yang Bicara
-                        <span class="font-bold text-red-700">Tentang Karaktermu</span>
-                        </h2>
-                        <p class="text-red-100 leading-relaxed">
-                        Koleksi streetwear premium dengan desain eksklusif untuk anak muda yang berani tampil beda dan autentik.
-                        </p>
-                    </div>
-                    </div>
-                    
-                    <!-- Right: Actions -->
-                    <div class="text-center lg:text-right space-y-6">
-                    <div class="space-y-4">
-                        <button class="block w-full lg:w-auto text-white bg-red-600 px-10 py-4 font-bold text-lg transition-colors">
-                        BELANJA SEKARANG
-                        </button>
-                        <button class="block w-full lg:w-auto border-2 border-white  px-10 py-4 font-bold text-lg text-red-900 transition-colors">
-                        <span class="animate-bounce">LIHAT KOLEKSI</span>
-                        </button>
-                    </div>
-                    
-                    <div class="flex justify-center lg:justify-end gap-6 text-red-200 text-sm">
-                        <span>✓ Original Design</span>
-                        <span>✓ Premium Quality</span>
-                        <span>✓ Fast Shipping</span>
-                    </div>
-                    </div>
-                    
-                </div>
-                </div>
-            </div>
-            </section>
+            
 </div>
 @endsection
