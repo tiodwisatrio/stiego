@@ -11,7 +11,8 @@ class EnsureUserIsAdmin
     {
         $user = $request->user();
 
-        if (! $user || ! $user->isAdmin()) {
+        // Allow both admin and developer roles
+        if (! $user || ! $user->hasAdminAccess()) {
             abort(403, 'Unauthorized. Admin access only.');
         }
 

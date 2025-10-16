@@ -3,11 +3,11 @@
 @section('title', $title . ' - Catalog')
 
 @section('content')
-<!-- Page Header -->
-<div class="bg-gradient-to-r from-red-600 to-red-700 text-white py-12 sm:py-16">
+<!-- Catalog Header -->
+<div class=" text-white py-12 sm:py-16">
     <div class="container mx-auto px-4 sm:px-6 lg:px-10">
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3">{{ $title }}</h1>
-        <p class="text-base sm:text-lg text-red-100">
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 text-gray-900">{{ $title }}</h1>
+        <p class="text-base sm:text-lg text-gray-600">
             @if($type == 'featured')
                 Handpicked products just for you
             @elseif($type == 'new_series')
@@ -19,10 +19,9 @@
             @endif
         </p>
     </div>
-</div>
 
 <!-- Filter Tabs -->
-<div class="bg-white border-b sticky top-0 z-10 shadow-sm">
+<div class=" sticky top-0 z-10">
     <div class="container mx-auto px-4 sm:px-6 lg:px-10">
         <div class="flex space-x-4 sm:space-x-8 overflow-x-auto py-4">
             <a href="{{ route('frontend.catalog.index') }}" 
@@ -33,22 +32,22 @@
             <a href="{{ route('frontend.catalog.type', 'featured') }}" 
                class="whitespace-nowrap px-4 py-2 text-sm sm:text-base font-medium rounded-full transition
                       {{ $type == 'featured' ? 'bg-red-600 text-white' : 'text-gray-600 hover:text-red-600 hover:bg-red-50' }}">
-                Featured
+                🚀Featured
             </a>
             <a href="{{ route('frontend.catalog.type', 'new_series') }}" 
                class="whitespace-nowrap px-4 py-2 text-sm sm:text-base font-medium rounded-full transition
                       {{ $type == 'new_series' ? 'bg-red-600 text-white' : 'text-gray-600 hover:text-red-600 hover:bg-red-50' }}">
-                New Series
+                🆕New Series
             </a>
             <a href="{{ route('frontend.catalog.type', 'hot_deals') }}" 
                class="whitespace-nowrap px-4 py-2 text-sm sm:text-base font-medium rounded-full transition
                       {{ $type == 'hot_deals' ? 'bg-red-600 text-white' : 'text-gray-600 hover:text-red-600 hover:bg-red-50' }}">
-                Hot Deals
+                🔥Hot Deals
             </a>
             <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
                class="whitespace-nowrap px-4 py-2 text-sm sm:text-base font-medium rounded-full transition
                       {{ $type == 'best_seller' ? 'bg-red-600 text-white' : 'text-gray-600 hover:text-red-600 hover:bg-red-50' }}">
-                Best Sellers
+                🌟Best Sellers
             </a>
         </div>
     </div>

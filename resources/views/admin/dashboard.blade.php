@@ -62,7 +62,7 @@
                 </div>
                 <div class="ml-4">
                     <p class="text-sm font-medium text-gray-600">Total Revenue</p>
-                    <p class="text-2xl font-semibold text-gray-700">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</p>
+                    <p class="text-lg font-semibold text-gray-700">Rp {{ number_format($stats['total_revenue'], 0, ',', '.') }}</p>
                 </div>
             </div>
         </div>

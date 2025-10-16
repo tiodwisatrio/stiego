@@ -147,7 +147,164 @@
 
 
 
-    <!-- New Arrivals -->
-    
+    <!-- Product Best Seller -->
+    <section id="best-seller" class="py-8 md:py-12">
+        <div class="flex flex-row items-center justify-between mb-2 sm:mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:text-start md:text-center">🌟Best Sellers</h2>
+            <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium">
+                View All →
+            </a>
+        </div>
+        @if($bestSellers->isEmpty())
+            <p class="text-center text-gray-600">Tidak ada produk best seller saat ini.</p>
+        @else
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                @foreach($bestSellers as $product)
+                    @include('frontend.catalog.partials.product-card', ['product' => $product])
+                @endforeach
+            </div>
+        @endif
+    </section>
+
+    <!-- Product New Series -->
+     <section id="best-seller" class="py-8 md:py-12">
+        <div class="flex flex-row items-center justify-between mb-2 sm:mb-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:text-start md:text-center">🆕New Series</h2>
+            <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium">
+                View All →
+            </a>
+        </div>
+        @if($newSeries->isEmpty())
+            <p class="text-center text-gray-600">Tidak ada produk new series saat ini.</p>
+        @else
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+                @foreach($newSeries as $product)
+                    @include('frontend.catalog.partials.product-card', ['product' => $product])
+                @endforeach
+            </div>
+        @endif
+    </section>
+
+    <!-- Cara Order  -->
+     <section class="py-12 bg-white">
+    <div class="container mx-auto">
+        <!-- Judul -->
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Cara Order</h2>
+
+        <!-- Langkah-langkah -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Step 1 -->
+            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
+                        1
+                    </div>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Pilih Produk Favoritmu</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Telusuri koleksi kami dan pilih model, ukuran, serta warna yang kamu suka. 
+                    Klik tombol “Tambah ke Keranjang” atau langsung “Beli Sekarang”.
+                </p>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
+                        2
+                    </div>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Isi Data & Checkout</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Masukkan nama, alamat pengiriman, dan metode pembayaran di halaman checkout. 
+                    Pastikan semua data sudah benar agar pesananmu diproses dengan cepat.
+                </p>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
+                <div class="flex items-center mb-4">
+                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
+                        3
+                    </div>
+                </div>
+                <h3 class="font-semibold text-gray-900 mb-2">Konfirmasi via WhatsApp</h3>
+                <p class="text-gray-600 text-sm leading-relaxed">
+                    Setelah klik “Pesan via WhatsApp”, lalu tim kami akan segera mengonfirmasi dan 
+                    memproses pesananmu.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-16 bg-white" 
+         x-data="testimonialMarquee({{ json_encode($testimonials) }})" 
+         x-init="startAutoplay()">
+    <div class="container mx-auto text-center">
+        <h2 class="text-2xl md:text-3xl font-bold mb-10">Testimonials</h2>
+
+        <div class="relative overflow-hidden group">
+            <!-- Track -->
+            <div class="flex space-x-6"
+                 :style="`transform: translateX(-${offset}px); transition: transform 0.1s linear;`"
+                 @mouseenter="pause()" 
+                 @mouseleave="resume()">
+                
+                <!-- Loop card -->
+                <template x-for="(item, index) in [...testimonials, ...testimonials]" :key="index">
+                    <div class="flex-shrink-0" style="width:400px;">
+                        <div class="bg-teal-800 text-white rounded-xl p-5 flex flex-col items-start gap-4 h-full min-h-[200px]">
+                            <div class="flex flex-row gap-3">
+                                <img :src="item.image" alt="User"
+                                     class="w-14 h-14 rounded-md object-cover">
+                                <div>
+                                    <h3 class="font-semibold text-sm md:text-base text-start" x-text="item.name"></h3>
+                                    <p class="text-xs md:text-sm leading-relaxed text-left" x-text="item.message"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
+    <!-- Alpine.js Script -->
+    <script>
+        function testimonialMarquee(testimonialData) {
+            return {
+                offset: 0,
+                speed: 1,
+                paused: false,
+                testimonials: testimonialData,
+                startAutoplay() {
+                    const step = () => {
+                        if (!this.paused) {
+                            this.offset += this.speed;
+                            const totalWidth = this.testimonials.length * 400; // width card
+                            if (this.offset >= totalWidth) this.offset = 0;
+                        }
+                        requestAnimationFrame(step);
+                    };
+                    requestAnimationFrame(step);
+                },
+                pause() {
+                    this.paused = true;
+                },
+                resume() {
+                    this.paused = false;
+                }
+            };
+        }
+    </script>
+</section>
+
+
+
+
+
 </main>
 @endsection

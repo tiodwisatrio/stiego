@@ -138,7 +138,12 @@
                                 @foreach($sizes as $size)
                                     <button type="button"
                                             @click="selectSize('{{ $size }}')"
-                                            :class="selectedSize === '{{ $size }}' ? 'bg-red-600 text-white border-red-600' : 'bg-white text-gray-900 border-gray-300 hover:border-red-600'"
+                                            :disabled="!isSizeAvailable('{{ $size }}')"
+                                            :class="{
+                                                'bg-red-600 text-white border-red-600': selectedSize === '{{ $size }}',
+                                                'bg-white text-gray-900 border-gray-300 hover:border-red-600': selectedSize !== '{{ $size }}' && isSizeAvailable('{{ $size }}'),
+                                                'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed': !isSizeAvailable('{{ $size }}')
+                                            }"
                                             class="px-6 py-2.5 border-2 rounded-lg font-medium transition-colors">
                                         {{ strtoupper($size) }}
                                     </button>
@@ -157,8 +162,13 @@
                                 @foreach($colors as $color)
                                     <button type="button"
                                             @click="selectColor('{{ $color }}')"
-                                            :class="selectedColor === '{{ $color }}' ? 'ring-2 ring-red-600 ring-offset-2' : 'ring-1 ring-gray-300'"
-                                            class="px-6 py-2.5 bg-white border-2 border-gray-200 rounded-lg font-medium hover:border-red-600 transition-all capitalize">
+                                            :disabled="!isColorAvailable('{{ $color }}')"
+                                            :class="{
+                                                'bg-red-600 text-white border-red-600': selectedColor === '{{ $color }}',
+                                                'bg-white text-gray-900 border-gray-300 hover:border-red-600': selectedColor !== '{{ $color }}' && isColorAvailable('{{ $color }}'),
+                                                'bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed': !isColorAvailable('{{ $color }}')
+                                            }"
+                                            class="px-6 py-2.5 border-2 rounded-lg font-medium transition-colors capitalize">
                                         {{ $color }}
                                     </button>
                                 @endforeach
@@ -247,13 +257,75 @@ function productDetail() {
         },
 
         selectSize(size) {
+            // Toggle: Jika klik ukuran yang sama, deselect (reset ke default)
+            if (this.selectedSize === size) {
+                this.selectedSize = '';
+                this.selectedVariant = null;
+                this.availableStock = 0;
+                return;
+            }
+            
             this.selectedSize = size;
+            
+            // Jika warna sudah dipilih tapi tidak ada kombinasi dengan size ini, reset warna
+            if (this.selectedColor && !this.isColorAvailable(this.selectedColor)) {
+                this.selectedColor = '';
+                this.selectedVariant = null;
+                this.availableStock = 0;
+            }
+            
             this.updateVariant();
         },
 
         selectColor(color) {
+            // Toggle: Jika klik warna yang sama, deselect (reset ke default)
+            if (this.selectedColor === color) {
+                this.selectedColor = '';
+                this.selectedVariant = null;
+                this.availableStock = 0;
+                return;
+            }
+            
             this.selectedColor = color;
+            
+            // Jika size sudah dipilih tapi tidak ada kombinasi dengan color ini, reset size
+            if (this.selectedSize && !this.isSizeAvailable(this.selectedSize)) {
+                this.selectedSize = '';
+                this.selectedVariant = null;
+                this.availableStock = 0;
+            }
+            
             this.updateVariant();
+        },
+
+        // Cek apakah ukuran tersedia berdasarkan warna yang dipilih
+        isSizeAvailable(size) {
+            // Jika belum pilih warna, semua ukuran tersedia
+            if (!this.selectedColor) {
+                return true;
+            }
+            
+            // Cek apakah ada variant dengan size ini dan warna yang dipilih
+            return this.variants.some(v => 
+                v.variant_size === size && 
+                v.variant_color === this.selectedColor &&
+                v.stock > 0
+            );
+        },
+
+        // Cek apakah warna tersedia berdasarkan ukuran yang dipilih
+        isColorAvailable(color) {
+            // Jika belum pilih ukuran, semua warna tersedia
+            if (!this.selectedSize) {
+                return true;
+            }
+            
+            // Cek apakah ada variant dengan warna ini dan ukuran yang dipilih
+            return this.variants.some(v => 
+                v.variant_color === color && 
+                v.variant_size === this.selectedSize &&
+                v.stock > 0
+            );
         },
 
         updateVariant() {
@@ -268,7 +340,7 @@ function productDetail() {
                     this.quantity = 1;
                 } else {
                     this.availableStock = 0;
-                    alert('Kombinasi size dan warna tidak tersedia');
+                    this.selectedVariant = null;
                 }
             }
         },

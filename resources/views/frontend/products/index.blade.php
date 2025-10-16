@@ -5,15 +5,15 @@
     <div class="max-w-7xl mx-auto py-4 sm:py-6 lg:py-8">
         
         <!-- Header -->
-        <div class="text-center mb-6 sm:mb-8">
-            <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-3">Our Products</h1>
-            <div class="w-20 sm:w-24 h-1 bg-red-600 mx-auto"></div>
+        <div class="sm:text-start md:text-center mb-3 md:mb-5 px-2">
+            <h1 class="text-xl md:text-2xl lg:text-4xl font-bold sm:text-center lg:text-start px-2 text-gray-900 mb-3">Products</h1>
+            <p class="text-sm md:text-base px-2">Temukan koleksi fashion terkini yang menggabungkan gaya dan kenyamanan anak muda.</p>
         </div>
 
         <!-- Filter & Search Section -->
 <div 
     x-data="{ open: false }" 
-    class="bg-white rounded-lg shadow-sm p-4 sm:p-6 mb-6"
+    class="rounded-lg shadow-sm p-4 sm:p-6 mb-6"
 >
     <!-- Mobile Toggle Button -->
     <div class="flex justify-between items-center sm:hidden">
@@ -201,7 +201,7 @@
                         <!-- View Details Button -->
                         <a href="{{ route('frontend.products.show', $product) }}" 
                            class="block w-full text-center px-3 py-2 sm:px-5 sm:py-3 bg-red-600 text-white text-xs sm:text-sm font-medium hover:bg-red-700 transition-colors">
-                            Lihat Detail
+                            Beli Sekarang
                         </a>
                     </div>
                 </div>

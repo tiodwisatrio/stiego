@@ -39,12 +39,19 @@ class RegisteredUserController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'role' => 'customer', // Default role untuk user yang register
         ]);
 
         event(new Registered($user));
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        // Redirect berdasarkan role
+        if ($user->hasAdminAccess()) {
+            return redirect()->route('admin.dashboard');
+        }
+        
+        // Customer redirect ke home
+        return redirect()->route('frontend.home')->with('success', 'Selamat datang! Akun Anda berhasil dibuat.');
     }
 }

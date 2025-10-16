@@ -165,7 +165,7 @@
   <h2 class="font-semibold text-3xl sm:text-4xl text-gray-900 mb-4">Ooops!</h2>
   <p class="text-sm sm:text-base mb-6">Keranjang masih kosong nih,<br /> yuk, belanja sekarang!</p>
   <a href="{{ route('frontend.products.index') }}" 
-     class="inline-block text-white rounded-md px-5 sm:px-6 py-2 sm:py-2.5 bg-blue-600 hover:bg-blue-700 font-medium text-sm sm:text-base transition">
+     class="inline-block text-white rounded-md px-5 sm:px-6 py-2 sm:py-2.5 bg-red-600 hover:bg-red-700 font-medium text-sm sm:text-base transition">
      Mulai Belanja →
   </a>
 </div>

@@ -27,6 +27,23 @@ export default {
         // Background opacity / hover
         "bg-black/30",
         "hover:bg-black/50",
+
+        // Safelist pattern untuk semua Tailwind colors (agar sekali build langsung include semua)
+        {
+            pattern:
+                /bg-(red|blue|green|yellow|purple|pink|indigo|teal|orange|cyan|lime|emerald|sky|violet|fuchsia|rose|amber|slate|gray|zinc|neutral|stone)-(50|100|200|300|400|500|600|700|800|900)/,
+            variants: ["hover", "focus", "active"],
+        },
+        {
+            pattern:
+                /text-(red|blue|green|yellow|purple|pink|indigo|teal|orange|cyan|lime|emerald|sky|violet|fuchsia|rose|amber|slate|gray|zinc|neutral|stone)-(50|100|200|300|400|500|600|700|800|900)/,
+            variants: ["hover", "focus", "active"],
+        },
+        {
+            pattern:
+                /border-(red|blue|green|yellow|purple|pink|indigo|teal|orange|cyan|lime|emerald|sky|violet|fuchsia|rose|amber|slate|gray|zinc|neutral|stone)-(50|100|200|300|400|500|600|700|800|900)/,
+            variants: ["hover", "focus", "active"],
+        },
     ],
 
     theme: {

@@ -36,11 +36,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::resource('admin/banners', BannerController::class)->names('admin.banners');
     Route::resource('admin/highlights', ProductHighlightController::class)->names('admin.highlights');
     
-
-
-
-
-
+    // User Management (Admin can manage customers, Developer can manage all)
+    Route::resource('admin/users', App\Http\Controllers\Admin\UserController::class)->names('admin.users');
 });
 
 

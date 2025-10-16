@@ -17,8 +17,9 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
+    public const ROLE_DEVELOPER = 'developer';
     public const ROLE_ADMIN = 'admin';
-    public const ROLE_USER = 'user';
+    public const ROLE_CUSTOMER = 'customer';
 
     protected $fillable = [
         'name',
@@ -54,4 +55,19 @@ class User extends Authenticatable
     {
         return $this->role === self::ROLE_ADMIN;
     }
+
+    public function isDeveloper(): bool
+    {
+        return $this->role === self::ROLE_DEVELOPER;
     }
+
+    public function isCustomer(): bool
+    {
+        return $this->role === self::ROLE_CUSTOMER;
+    }
+
+    public function hasAdminAccess(): bool
+    {
+        return in_array($this->role, [self::ROLE_ADMIN, self::ROLE_DEVELOPER]);
+    }
+}

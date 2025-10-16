@@ -15,7 +15,8 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!$request->user() || !$request->user()->isAdmin()) {
+        // Allow both admin and developer roles
+        if (!$request->user() || !$request->user()->hasAdminAccess()) {
             if ($request->expectsJson()) {
                 return response()->json(['message' => 'Unauthorized. Admin access only.'], 403);
             }
