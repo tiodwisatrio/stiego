@@ -12,8 +12,8 @@ class CategoryController extends Controller
     {
         // Ambil kategori dengan relasi parent dan children
         $categories = Category::with(['parent', 'children'])
-            ->parents() // Hanya parent categories
-            ->latest()
+            ->parents()
+            ->orderBy('id', 'asc') // ✅ ganti dari ->latest() ke orderBy ID ASC
             ->paginate(10);
         
         return view('admin.categories.index', compact('categories'));

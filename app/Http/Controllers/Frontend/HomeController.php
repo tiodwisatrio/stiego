@@ -16,6 +16,21 @@ class HomeController extends Controller
     public function index(): View
     {
         $banners = Banner::where('banner_status', 1)->get();
+
+        $featured = ProductHighlight::with('product.images', 'product.category')
+            ->where('highlight_type', 'featured')
+            ->whereHas('product')
+            ->whereDate('start_date', '<=', today())
+            ->where(function($query) {
+                $query->whereNull('end_date')
+                      ->orWhereDate('end_date', '>=', today());
+            })
+            ->latest()
+            ->take(4)
+            ->get()
+            ->map(function($highlight) {
+                return $highlight->product;
+            });
         
         // Get best seller products from product_highlights
         $bestSellers = \App\Models\ProductHighlight::with('product.images', 'product.category')
@@ -27,7 +42,7 @@ class HomeController extends Controller
                       ->orWhereDate('end_date', '>=', today());
             })
             ->latest()
-            ->take(5)
+            ->take(4)
             ->get()
             ->map(function($highlight) {
                 return $highlight->product;
@@ -42,15 +57,33 @@ class HomeController extends Controller
                       ->orWhereDate('end_date', '>=', today());
             })
             ->latest()
-            ->take(5)
+            ->take(4)
             ->get()
             ->map(function($highlight) {
                 return $highlight->product;
             });
 
+            $hotDeals = ProductHighlight::with('product.images', 'product.category')
+            ->where('highlight_type', 'hot_deals')
+            ->whereHas('product')
+            ->whereDate('start_date', '<=', today())
+            ->where(function($query) {
+                $query->whereNull('end_date')
+                      ->orWhereDate('end_date', '>=', today());
+            })
+            ->latest()
+            ->take(4)
+            ->get()
+            ->map(function($highlight) {
+                return $highlight->product;
+            });
+
+
         // Get testimonials data
         $testimonials = \App\Models\Testimonials::select(
             'testimonial_name as name',
+            'testimonial_position as position',
+            'testimonial_rating as rating',
             'testimonial_description as message',
             'testimonial_image as image'
         )->get();
@@ -65,7 +98,9 @@ class HomeController extends Controller
 
         return view('frontend.home', [
             'banners' => $banners,
+            'featured' => $featured,
             'bestSellers' => $bestSellers,
+            'hotDeals' => $hotDeals,
             'newSeries' => $newSeries,
             'testimonials' => $testimonials
         ]);

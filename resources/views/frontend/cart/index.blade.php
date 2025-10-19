@@ -149,7 +149,7 @@
 
         <button type="submit"
                 class="w-full py-2.5 sm:py-3 bg-red-600 text-white text-sm sm:text-base font-semibold rounded-md hover:bg-red-700 transition mt-3 sm:mt-4">
-          Checkout via WhatsApp
+          Checkout
         </button>
       </form>
 

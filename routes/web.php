@@ -38,6 +38,11 @@ Route::middleware(['auth', 'admin'])->group(function () {
     
     // User Management (Admin can manage customers, Developer can manage all)
     Route::resource('admin/users', App\Http\Controllers\Admin\UserController::class)->names('admin.users');
+    
+    // Admin Profile Management
+    Route::get('admin/profile', [App\Http\Controllers\Admin\ProfileController::class, 'edit'])->name('admin.profile.edit');
+    Route::patch('admin/profile', [App\Http\Controllers\Admin\ProfileController::class, 'update'])->name('admin.profile.update');
+    Route::patch('admin/profile/password', [App\Http\Controllers\Admin\ProfileController::class, 'updatePassword'])->name('admin.profile.password');
 });
 
 

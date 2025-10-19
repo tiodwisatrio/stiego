@@ -5,10 +5,10 @@
     <div class="max-w-7xl mx-auto py-4 sm:py-6 lg:py-8">
         
         <!-- Header -->
-        <div class="sm:text-start md:text-center mb-3 md:mb-5 px-2">
-            <h1 class="text-xl md:text-2xl lg:text-4xl font-bold sm:text-center lg:text-start px-2 text-gray-900 mb-3">Products</h1>
-            <p class="text-sm md:text-base px-2">Temukan koleksi fashion terkini yang menggabungkan gaya dan kenyamanan anak muda.</p>
-        </div>
+        <!-- <div class="text-start mb-3 md:mb-5 px-2">
+            <h1 class="text-xl md:text-2xl lg:text-4xl font-bold text-start  text-gray-900 mb-3">Products</h1>
+            <p class="text-base">Temukan koleksi fashion terkini yang menggabungkan gaya dan kenyamanan anak muda.</p>
+        </div> -->
 
         <!-- Filter & Search Section -->
 <div 
@@ -20,7 +20,7 @@
         <h2 class="text-base font-semibold text-gray-800">Filter & Sort</h2>
         <button 
             @click="open = !open" 
-            class="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-md hover:bg-red-700 transition">
+            class="px-4 py-2 text-sm font-medium bg-red-600 text-white rounded-full hover:bg-red-700 transition">
             <span x-text="open ? 'Close' : 'Open'"></span>
         </button>
     </div>
@@ -102,11 +102,11 @@
 
                 <div class="flex gap-2 w-full sm:w-auto">
                     <button type="submit" 
-                            class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-xs sm:text-sm">
+                            class="flex-1 text-center sm:flex-none px-4 sm:px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition font-medium text-xs sm:text-sm">
                         Apply
                     </button>
                     <a href="{{ route('frontend.products.index') }}" 
-                       class="flex-1 sm:flex-none px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-xs sm:text-sm">
+                       class="flex-1 text-center sm:flex-none px-4 sm:px-6 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition font-medium text-xs sm:text-sm">
                         Reset
                     </a>
                 </div>

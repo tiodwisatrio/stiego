@@ -7,13 +7,13 @@
     "
     :class="scrolled ? 'bg-white/100 backdrop-blur-md fixed top-0 left-0 w-full z-50 transition-all duration-300' : 'bg-white fixed top-0 left-0 w-full z-50 transition-all duration-300'"
 >
-    <div class="container mx-auto px-6 sm:px-10 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-white">
         <div class="flex justify-between items-center h-16">
             <!-- Logo -->
             <div class="flex-shrink-0">
                 <a href="{{ route('frontend.home') }}" class="flex items-center gap-2">
                     <img src="{{ asset('images/logo_stiego.png') }}" alt="StiegoApp Logo" class="h-8 w-auto">
-                    <span class="text-lg font-bold text-gray-800">Stiego</span>
+                    <!-- <span class="text-lg font-bold text-gray-800">Stiego</span> -->
                 </a>
             </div>
 
@@ -188,11 +188,11 @@
                 @else
                     <!-- If User is NOT Logged In -->
                     <a href="{{ route('login') }}" 
-                       class="block w-full text-center bg-gray-200 text-gray-700 py-2 rounded-md hover:bg-gray-300 transition">
+                       class="block w-full text-center text-white bg-red-700 hover:bg-red-800 rounded-full py-2.5 transition">
                         Login
                     </a>
                     <a href="{{ route('register') }}" 
-                       class="block w-full text-center bg-red-600 text-white py-2 rounded-md hover:bg-red-700 transition">
+                       class="block w-full text-center transition">
                         Register
                     </a>
                 @endauth

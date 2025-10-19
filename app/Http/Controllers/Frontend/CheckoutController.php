@@ -136,7 +136,7 @@ class CheckoutController extends Controller
         $message .= "Mohon konfirmasi pesanan ini. Terima kasih! 🙏";
 
         // WhatsApp business number (change this to your actual number)
-        $whatsappNumber = '62881024410819'; // Format: 62xxx (Indonesian number without +)
+        $whatsappNumber = '6289527668283'; // Format: 62xxx (Indonesian number without +)
         
         // URL encode the message
         $encodedMessage = urlencode($message);

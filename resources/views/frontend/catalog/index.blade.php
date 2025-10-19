@@ -5,14 +5,14 @@
 @section('content')
 <!-- Catalog Header -->
 <div class=" text-white py-12 sm:py-16">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 text-gray-900">Product <span class="text-red-700">Highlights</span></h1>
         <p class="text-base sm:text-lg text-gray-600">Discover our curated selection of highlighted products, featuring the best deals, new arrivals, and top sellers just for you.</p>
     </div>
 
 <!-- Filter Tabs -->
 <div class=" sticky top-0 z-10">
-    <div class="container mx-auto px-4 sm:px-6 lg:px-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex space-x-4 sm:space-x-8 overflow-x-auto py-4">
             <a href="{{ route('frontend.catalog.index') }}" 
                class="whitespace-nowrap px-4 py-2 text-sm sm:text-base font-medium rounded-full transition
@@ -43,7 +43,7 @@
     </div>
 </div>
 
-<div class="container mx-auto px-4 sm:px-6 lg:px-10 py-8 sm:py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
     
     @if($highlights->isEmpty())
         <!-- Empty State -->

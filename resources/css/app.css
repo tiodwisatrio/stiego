@@ -35,3 +35,14 @@ body {
     height: 100%;
     object-fit: cover; /* Memastikan gambar menutupi area tanpa distorsi */
 }
+
+/* Testimonial message responsive max-width */
+.testi_message {
+    max-width: 300px;
+}
+
+@media (min-width: 768px) {
+    .testi_message {
+        max-width: 400px;
+    }
+}

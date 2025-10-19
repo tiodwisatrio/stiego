@@ -3,9 +3,8 @@
 @section('content')
     <div class="bg-white p-6 rounded-lg shadow">
         <!-- Header -->
+         <h3 class="text-xl text-gray-900 py-4 font-semibold">Product Management</h3>
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mb-6">
-            <h2 class="text-2xl font-semibold text-gray-800">Products Management</h2>
-            
             <div class="flex flex-col sm:flex-row gap-4">
                 <!-- Search and Filter Form -->
                 <form action="{{ route('admin.products.index') }}" method="GET" class="flex flex-1 gap-4">
@@ -130,8 +129,10 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($products as $product)
                         <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium text-gray-900">{{ $product->product_name }}</div>
+                            <td class="px-6 py-4">
+                                <div class="text-sm font-medium text-gray-900 max-w-xs line-clamp-2" title="{{ $product->product_name }}">
+                                    {{ $product->product_name }}
+                                </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="text-sm text-gray-900">{{ $product->category->category_name }}</div>

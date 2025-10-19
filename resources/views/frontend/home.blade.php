@@ -1,165 +1,161 @@
 @extends('layouts.frontend')
 
 @section('content')
-<!-- Hero Section -->
+<!-- Main Container -->
 <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col lg:flex-row items-center justify-between gap-8 py-8 lg:py-16">
-        <!-- Left Side - Text Content -->
-        <div class="w-full lg:w-5/12 space-y-6 px-0 lg:px-5">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 text-center lg:text-left">
+
+    <!-- Hero Section -->
+    <section class="flex flex-col lg:flex-row items-center justify-between gap-8 py-8 lg:py-16" aria-label="Hero Section">
+        <!-- Left Content -->
+        <div class="w-full lg:w-5/12 space-y-6 text-center lg:text-left">
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
                 Ingin tampil stylish dengan pakaian yang trendy & kekinian?
             </h1>
-            <p class="text-lg text-gray-600 text-center lg:text-left">
-                Kami punya solusi nya, tunjukan karakter kamu lewat outfit dari stiego, dan style yang nunjukin gaya kamu.
+            <p class="text-lg text-gray-600">
+                Kami punya solusinya! Tunjukan karakter kamu lewat outfit dari Stiego dan style yang nunjukin gaya kamu.
             </p>
             <div class="flex flex-col sm:flex-row justify-center lg:justify-start gap-4 pt-6">
                 <a href="{{ route('frontend.products.index') }}" 
-                   class="w-full sm:w-auto px-8 py-4 rounded-full bg-[#B62127] text-white font-medium hover:bg-[#FF0000] transition-colors text-center">
+                   class="w-full sm:w-auto px-8 py-4 rounded-full bg-red-700 hover:bg-red-800 text-white font-medium transition-colors text-center focus:outline-none focus:ring-4 focus:ring-red-300"
+                   aria-label="Belanja Sekarang">
                     Belanja Sekarang
                 </a>
-                <a href="#promo" 
-                   class="w-full sm:w-auto px-8 py-4 rounded-full border-2 border-[#B62127] text-[#B62127] font-medium hover:bg-[#FF0000] hover:text-white transition-colors text-center">
-                    Lihat Promo
+                <a href="#catalog" 
+                   class="w-full sm:w-auto px-8 py-4 rounded-full border-2 border-red-700 text-red-700 font-medium hover:bg-red-700 hover:text-white transition-colors text-center focus:outline-none focus:ring-4 focus:ring-red-200"
+                   aria-label="Lihat catalog">
+                    Lihat Catalog
                 </a>
             </div>
         </div>
 
-        <!-- Right Side - Image Grid -->
+        <!-- Right Image Grid -->
         <div class="w-full lg:w-7/12 mt-8 lg:mt-0">
             <div class="grid grid-cols-4 gap-3 md:gap-4">
-                <!-- Main large image (takes 3 columns) -->
+                <!-- Main large image -->
                 <div class="col-span-3">
                     <img src="{{ asset('images/image_hero1.png') }}" 
-                         alt="Main fashion image"
+                         alt="Outfit utama Stiego" loading="lazy"
                          class="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover rounded-lg shadow-lg">
                 </div>
-                <!-- Two smaller images stacked vertically -->
+                <!-- Two smaller images -->
                 <div class="space-y-3 md:space-y-4">
                     <img src="{{ asset('images/image_hero2.png') }}"
-                         alt="Fashion detail 1"
+                         alt="Outfit tambahan 1" loading="lazy"
                          class="w-full h-[120px] sm:h-[145px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
                     <img src="{{ asset('images/image_hero3.png') }}"
-                         alt="Fashion detail 2"
+                         alt="Outfit tambahan 2" loading="lazy"
                          class="w-full h-[120px] sm:h-[145px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-<!-- Banner Slider Section -->
-<!-- Banner Slider Section -->
-<div id="banner-slider" class="relative py-6 md:py-8"
-     x-data="{ 
-        currentIndex: 0, 
-        banners: {{ json_encode($banners) }},
-        autoplayInterval: null,
-        startX: 0,
-        endX: 0,
-        isDragging: false,
-        
-        startAutoplay() {
-            this.autoplayInterval = setInterval(() => this.next(), 5000)
-        },
-        stopAutoplay() {
-            clearInterval(this.autoplayInterval)
-        },
-        next() {
-            this.currentIndex = (this.currentIndex + 1) % this.banners.length
-        },
-        prev() {
-            this.currentIndex = (this.currentIndex - 1 + this.banners.length) % this.banners.length
-        },
-        handleStart(e) {
-            this.stopAutoplay()
-            this.isDragging = true
-            this.startX = e.touches ? e.touches[0].clientX : e.clientX
-        },
-        handleMove(e) {
-            if (!this.isDragging) return
-            this.endX = e.touches ? e.touches[0].clientX : e.clientX
-        },
-        handleEnd() {
-            if (!this.isDragging) return
-            const distance = this.endX - this.startX
-            if (Math.abs(distance) > 50) {
-                if (distance < 0) this.next()
-                else this.prev()
-            }
-            this.isDragging = false
-            this.startAutoplay()
-        }
-     }"
-     x-init="startAutoplay()"
-     @mouseenter="stopAutoplay()"
-     @mouseleave="startAutoplay()">
+    <!-- Banner Slider Section -->
+    <div id="banner-slider" class="relative md:py-4"
+         x-data="{ 
+            currentIndex: 0, 
+            banners: {{ json_encode($banners) }},
+            autoplayInterval: null,
+            startX: 0,
+            endX: 0,
+            isDragging: false,
+            startAutoplay() { this.autoplayInterval = setInterval(() => this.next(), 5000) },
+            stopAutoplay() { clearInterval(this.autoplayInterval) },
+            next() { this.currentIndex = (this.currentIndex + 1) % this.banners.length },
+            prev() { this.currentIndex = (this.currentIndex - 1 + this.banners.length) % this.banners.length },
+            handleStart(e) { this.stopAutoplay(); this.isDragging = true; this.startX = e.touches ? e.touches[0].clientX : e.clientX },
+            handleMove(e) { if (!this.isDragging) return; this.endX = e.touches ? e.touches[0].clientX : e.clientX },
+            handleEnd() { if (!this.isDragging) return; const d = this.endX - this.startX; if (Math.abs(d) > 50) { d < 0 ? this.next() : this.prev() } this.isDragging = false; this.startAutoplay() }
+         }"
+         x-init="startAutoplay()"
+         @mouseenter="stopAutoplay()"
+         @mouseleave="startAutoplay()">
 
-    <div class="overflow-hidden rounded-lg relative w-full">
-        <!-- Slides Container -->
-        <div class="flex transition-transform duration-500 ease-in-out w-full select-none"
-             :style="`transform: translateX(-${currentIndex * 100}%);`"
-             @mousedown="handleStart($event)"
-             @mousemove="handleMove($event)"
-             @mouseup="handleEnd()"
-             @mouseleave="isDragging && handleEnd()"
-             @touchstart="handleStart($event)"
-             @touchmove="handleMove($event)"
-             @touchend="handleEnd()">
-             
-            @foreach ($banners as $index => $banner)
-            <div class="flex-shrink-0 w-full">
-                <div class="w-full aspect-[16/9] sm:aspect-[16/7] md:aspect-[16/6] lg:aspect-[16/5] flex flex-row gap-3">
-                    <img src="{{ Storage::url($banner->banner_image) }}" 
-                         alt="{{ $banner->banner_title }}" 
-                         class="w-full h-full object-contain rounded-lg pointer-events-none">
+        <div class="overflow-hidden rounded-lg relative w-full">
+            <!-- Slides -->
+            <div class="flex transition-transform duration-500 ease-in-out w-full select-none"
+                 :style="`transform: translateX(-${currentIndex * 100}%);`"
+                 @mousedown="handleStart($event)"
+                 @mousemove="handleMove($event)"
+                 @mouseup="handleEnd()"
+                 @mouseleave="isDragging && handleEnd()"
+                 @touchstart="handleStart($event)"
+                 @touchmove="handleMove($event)"
+                 @touchend="handleEnd()">
+
+                @foreach ($banners as $index => $banner)
+                <div class="flex-shrink-0 w-full">
+                    <div class="w-full aspect-[16/9] sm:aspect-[16/7] md:aspect-[16/6] lg:aspect-[16/5]">
+                        <img src="{{ Storage::url($banner->banner_image) }}" 
+                             alt="{{ $banner->banner_title }}" loading="lazy"
+                             class="w-full h-full object-contain rounded-lg pointer-events-none">
+                    </div>
                 </div>
+                @endforeach
             </div>
+
+            <!-- Navigation -->
+            <button @click.prevent="prev()" aria-label="Sebelumnya"
+                    class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 sm:p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-white">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+                </svg>
+            </button>
+            <button @click.prevent="next()" aria-label="Berikutnya"
+                    class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 sm:p-2 rounded-full focus:outline-none focus:ring-2 focus:ring-white">
+                <svg class="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Dots -->
+        <div class="absolute left-1/2 transform -translate-x-1/2 flex space-x-2" style="margin-top: -10px;">
+            @foreach ($banners as $index => $banner)
+            <button @click="currentIndex = {{ $index }}" 
+                    :aria-current="currentIndex === {{ $index }} ? 'true' : 'false'"
+                    :class="{'bg-[#B62127]': currentIndex === {{ $index }}, 'bg-gray-400': currentIndex !== {{ $index }}}"
+                    class="w-2 sm:w-3 h-2 sm:h-3 rounded-full focus:outline-none focus:ring-2 focus:ring-red-400 transition-colors">
+            </button>
             @endforeach
         </div>
-
-        <!-- Previous Button -->
-        <button @click.prevent="prev()" 
-                class="absolute left-2 sm:left-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 sm:p-2 rounded-full focus:outline-none z-10">
-            <svg class="w-4 sm:w-6 h-4 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-            </svg>
-        </button>
-
-        <!-- Next Button -->
-        <button @click.prevent="next()" 
-                class="absolute right-2 sm:right-4 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 sm:p-2 rounded-full focus:outline-none z-10">
-            <svg class="w-4 sm:w-6 h-4 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-            </svg>
-        </button>
     </div>
 
-    <!-- Dots Navigation -->
-    <div class="absolute -bottom-3 sm:-bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-        @foreach ($banners as $index => $banner)
-        <button @click="currentIndex = {{ $index }}" 
-                :class="{'bg-[#B62127]': currentIndex === {{ $index }}, 'bg-gray-400': currentIndex !== {{ $index }}}"
-                class="w-2 sm:w-3 h-2 sm:h-3 rounded-full focus:outline-none transition-colors">
-        </button>
-        @endforeach
-    </div>
-</div>
-
-
-
-
-    <!-- Product Best Seller -->
-    <section id="best-seller" class="py-8 md:py-12">
-        <div class="flex flex-row items-center justify-between mb-2 sm:mb-4">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:text-start md:text-center">🌟Best Sellers</h2>
-            <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
-               class="text-sm text-red-600 hover:text-red-700 font-medium">
-                View All →
+    <!-- Featured Products -->
+    <section id="featured" class="py-8 md:py-12" aria-labelledby="featured-heading">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h2 id="featured-heading" class="text-2xl md:text-3xl font-bold text-gray-900">🚀 Featured</h2>
+            <a href="{{ route('frontend.catalog.type', 'featured') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium focus:outline-none focus:underline">
+               View All →
             </a>
         </div>
+
+        @if($featured->isEmpty())
+            <p class="text-center text-gray-600">Tidak ada produk unggulan saat ini.</p>
+        @else
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                @foreach($featured as $product)
+                    @include('frontend.catalog.partials.product-card', ['product' => $product])
+                @endforeach
+            </div>
+        @endif
+    </section>
+
+    <!-- Best Seller -->
+    <section id="best-seller" class="py-8 md:py-12" aria-labelledby="bestseller-heading">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h2 id="bestseller-heading" class="text-2xl md:text-3xl font-bold text-gray-900">🌟 Best Sellers</h2>
+            <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium focus:outline-none focus:underline">
+               View All →
+            </a>
+        </div>
+
         @if($bestSellers->isEmpty())
             <p class="text-center text-gray-600">Tidak ada produk best seller saat ini.</p>
         @else
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 @foreach($bestSellers as $product)
                     @include('frontend.catalog.partials.product-card', ['product' => $product])
                 @endforeach
@@ -167,19 +163,41 @@
         @endif
     </section>
 
-    <!-- Product New Series -->
-     <section id="best-seller" class="py-8 md:py-12">
-        <div class="flex flex-row items-center justify-between mb-2 sm:mb-4">
-            <h2 class="text-2xl md:text-3xl font-bold text-gray-900 mb-6 sm:text-start md:text-center">🆕New Series</h2>
-            <a href="{{ route('frontend.catalog.type', 'best_seller') }}" 
-               class="text-sm text-red-600 hover:text-red-700 font-medium">
-                View All →
+    <!-- Hot Deals -->
+    <section id="hot-deals" class="py-8 md:py-12" aria-labelledby="hotdeals-heading">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h2 id="hotdeals-heading" class="text-2xl md:text-3xl font-bold text-gray-900">🔥 Hot Deals</h2>
+            <a href="{{ route('frontend.catalog.type', 'hot_deals') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium focus:outline-none focus:underline">
+               View All →
             </a>
         </div>
+
+        @if($hotDeals->isEmpty())
+            <p class="text-center text-gray-600">Tidak ada produk hot deals saat ini.</p>
+        @else
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+                @foreach($hotDeals as $product)
+                    @include('frontend.catalog.partials.product-card', ['product' => $product])
+                @endforeach
+            </div>
+        @endif
+    </section>
+
+    <!-- New Series -->
+    <section id="new-series" class="py-8 md:py-12" aria-labelledby="newseries-heading">
+        <div class="flex flex-row items-center justify-between mb-4">
+            <h2 id="newseries-heading" class="text-2xl md:text-3xl font-bold text-gray-900">🆕 New Series</h2>
+            <a href="{{ route('frontend.catalog.type', 'new_series') }}" 
+               class="text-sm text-red-600 hover:text-red-700 font-medium focus:outline-none focus:underline">
+               View All →
+            </a>
+        </div>
+
         @if($newSeries->isEmpty())
             <p class="text-center text-gray-600">Tidak ada produk new series saat ini.</p>
         @else
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4 md:gap-6">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
                 @foreach($newSeries as $product)
                     @include('frontend.catalog.partials.product-card', ['product' => $product])
                 @endforeach
@@ -187,92 +205,103 @@
         @endif
     </section>
 
-    <!-- Cara Order  -->
-     <section class="py-12 bg-white">
-    <div class="container mx-auto">
-        <!-- Judul -->
-        <h2 class="text-2xl md:text-3xl font-bold text-center mb-6">Cara Order</h2>
-
-        <!-- Langkah-langkah -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <!-- Step 1 -->
-            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center mb-4">
-                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
-                        1
+    <!-- Cara Order -->
+    <section class="py-12 bg-white" aria-labelledby="caraorder-heading">
+        <div class="container mx-auto">
+            <h2 id="caraorder-heading" class="text-2xl md:text-3xl font-bold text-center mb-6">Cara Order</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition focus-within:ring-2 focus-within:ring-red-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">1</div>
                     </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Pilih Produk Favoritmu</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Telusuri koleksi kami dan pilih model, ukuran, serta warna yang kamu suka. 
+                        Klik tombol “Tambah ke Keranjang” atau langsung “Beli Sekarang”.
+                    </p>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Pilih Produk Favoritmu</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Telusuri koleksi kami dan pilih model, ukuran, serta warna yang kamu suka. 
-                    Klik tombol “Tambah ke Keranjang” atau langsung “Beli Sekarang”.
-                </p>
-            </div>
 
-            <!-- Step 2 -->
-            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center mb-4">
-                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
-                        2
+                <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition focus-within:ring-2 focus-within:ring-red-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">2</div>
                     </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Isi Data & Checkout</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Masukkan nama, alamat pengiriman, dan metode pembayaran di halaman checkout. 
+                        Pastikan semua data sudah benar agar pesananmu diproses dengan cepat.
+                    </p>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Isi Data & Checkout</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Masukkan nama, alamat pengiriman, dan metode pembayaran di halaman checkout. 
-                    Pastikan semua data sudah benar agar pesananmu diproses dengan cepat.
-                </p>
-            </div>
 
-            <!-- Step 3 -->
-            <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition">
-                <div class="flex items-center mb-4">
-                    <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">
-                        3
+                <div class="border rounded-xl p-6 shadow-sm hover:shadow-md transition focus-within:ring-2 focus-within:ring-red-300">
+                    <div class="flex items-center mb-4">
+                        <div class="w-8 h-8 flex items-center justify-center bg-red-700 text-white font-bold rounded-full">3</div>
                     </div>
+                    <h3 class="font-semibold text-gray-900 mb-2">Konfirmasi via WhatsApp</h3>
+                    <p class="text-gray-600 text-sm leading-relaxed">
+                        Setelah klik “Pesan via WhatsApp”, tim kami akan segera mengonfirmasi dan memproses pesananmu.
+                    </p>
                 </div>
-                <h3 class="font-semibold text-gray-900 mb-2">Konfirmasi via WhatsApp</h3>
-                <p class="text-gray-600 text-sm leading-relaxed">
-                    Setelah klik “Pesan via WhatsApp”, lalu tim kami akan segera mengonfirmasi dan 
-                    memproses pesananmu.
-                </p>
             </div>
         </div>
-    </div>
-</section>
+    </section>
 
-<section class="py-16 bg-white" 
-         x-data="testimonialMarquee({{ json_encode($testimonials) }})" 
-         x-init="startAutoplay()">
-    <div class="container mx-auto text-center">
-        <h2 class="text-2xl md:text-3xl font-bold mb-10">Testimonials</h2>
-
-        <div class="relative overflow-hidden group">
-            <!-- Track -->
-            <div class="flex space-x-6"
-                 :style="`transform: translateX(-${offset}px); transition: transform 0.1s linear;`"
-                 @mouseenter="pause()" 
-                 @mouseleave="resume()">
-                
-                <!-- Loop card -->
-                <template x-for="(item, index) in [...testimonials, ...testimonials]" :key="index">
-                    <div class="flex-shrink-0" style="width:400px;">
-                        <div class="bg-teal-800 text-white rounded-xl p-5 flex flex-col items-start gap-4 h-full min-h-[200px]">
-                            <div class="flex flex-row gap-3">
-                                <img :src="item.image" alt="User"
-                                     class="w-14 h-14 rounded-md object-cover">
-                                <div>
-                                    <h3 class="font-semibold text-sm md:text-base text-start" x-text="item.name"></h3>
-                                    <p class="text-xs md:text-sm leading-relaxed text-left" x-text="item.message"></p>
+    <!-- Testimonials Section -->
+    <section class="py-16 bg-white" 
+             x-data="testimonialMarquee({{ json_encode($testimonials) }})" 
+             x-init="startAutoplay()">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-10">Testimonials</h2>
+            
+            <!-- Marquee Container -->
+            <div class="relative overflow-hidden">
+                <!-- Testimonial Track -->
+                <div class="flex gap-4 sm:gap-6" 
+                     :style="`transform: translateX(-${offset}px); transition: transform 0.1s linear;`"
+                     @mouseenter="pause()" 
+                     @mouseleave="resume()"
+                     @touchstart="pause()"
+                     @touchend="resume()">
+                    
+                    <!-- Loop testimonial cards (duplicated for seamless loop) -->
+                    <template x-for="(item, index) in [...testimonials, ...testimonials]" :key="index">
+                        <div class="flex-shrink-0 w-[280px] sm:w-[350px] lg:w-[400px]">
+                            <div class="bg-teal-800 text-white rounded-xl p-4 sm:p-5 flex flex-col gap-3 sm:gap-4 h-full min-h-[180px] sm:min-h-[200px]">
+                                <!-- User Info & Rating -->
+                                <div class="flex gap-3">
+                                    <img :src="item.image" 
+                                         :alt="item.name" 
+                                         class="w-12 h-12 sm:w-14 sm:h-14 rounded-md object-cover flex-shrink-0">
+                                    
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-semibold text-sm md:text-base truncate" x-text="item.name"></h3>
+                                        
+                                        <!-- Rating Stars -->
+                                        <div class="flex space-x-1 mt-1">
+                                            <template x-for="star in 5" :key="star">
+                                                <svg xmlns="http://www.w3.org/2000/svg" 
+                                                     viewBox="0 0 20 20" 
+                                                     fill="currentColor"
+                                                     :class="star <= item.rating ? 'text-yellow-400' : 'text-gray-400'" 
+                                                     class="w-3.5 h-3.5 sm:w-4 sm:h-4">
+                                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.176 0l-2.8 2.034c-.785.57-1.84-.197-1.54-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.462a1 1 0 00.95-.69l1.07-3.292z" />
+                                                </svg>
+                                            </template>
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                <!-- Testimonial Message -->
+                                <p class="testi_message text-xs sm:text-sm leading-relaxed text-left opacity-90 line-clamp-4"  
+                                   x-text="item.message"></p>
                             </div>
                         </div>
-                    </div>
-                </template>
+                    </template>
+                </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Alpine.js Script -->
+    <!-- Alpine.js Script for Testimonial Marquee -->
     <script>
         function testimonialMarquee(testimonialData) {
             return {
@@ -280,31 +309,49 @@
                 speed: 1,
                 paused: false,
                 testimonials: testimonialData,
+                cardWidth: 280, // Default mobile width
+                
+                init() {
+                    this.updateCardWidth();
+                    window.addEventListener('resize', () => this.updateCardWidth());
+                },
+                
+                updateCardWidth() {
+                    // Responsive card width based on screen size
+                    if (window.innerWidth >= 1024) {
+                        this.cardWidth = 400; // lg
+                    } else if (window.innerWidth >= 640) {
+                        this.cardWidth = 350; // sm
+                    } else {
+                        this.cardWidth = 280; // mobile
+                    }
+                },
+                
                 startAutoplay() {
                     const step = () => {
                         if (!this.paused) {
                             this.offset += this.speed;
-                            const totalWidth = this.testimonials.length * 400; // width card
-                            if (this.offset >= totalWidth) this.offset = 0;
+                            const gap = window.innerWidth >= 640 ? 24 : 16; // gap-6 or gap-4
+                            const totalWidth = this.testimonials.length * (this.cardWidth + gap);
+                            
+                            if (this.offset >= totalWidth) {
+                                this.offset = 0;
+                            }
                         }
                         requestAnimationFrame(step);
                     };
                     requestAnimationFrame(step);
                 },
+                
                 pause() {
                     this.paused = true;
                 },
+                
                 resume() {
                     this.paused = false;
                 }
             };
         }
-    </script>
-</section>
-
-
-
-
-
-</main>
+    </script> 
+    </main>
 @endsection
