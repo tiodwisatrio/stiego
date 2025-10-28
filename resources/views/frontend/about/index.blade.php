@@ -1,7 +1,7 @@
 @extends('layouts.frontend')
 
 @section('content')
-<div class="bg-white">
+<div class="">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <!-- About Stiego -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center ">
@@ -13,17 +13,17 @@
                 </p>
                
                <div class="flex flex-wrap justify-center md:justify-between gap-6 mt-8">
-                    <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                    <div class="text-center p-4 rounded-lg flex-1 min-w-[150px]">
                         <h3 class="text-2xl font-bold text-red-600">100.000+</h3>
                         <p class="text-gray-600">Pelanggan</p>
                     </div>
 
-                    <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                    <div class="text-center p-4 rounded-lg flex-1 min-w-[150px]">
                         <h3 class="text-2xl font-bold text-red-600">10.000+</h3>
                         <p class="text-gray-600">Produk</p>
                     </div>
 
-                    <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                    <div class="text-center p-4 rounded-lg flex-1 min-w-[150px]">
                         <h3 class="text-2xl font-bold text-red-600">5+</h3>
                         <p class="text-gray-600">Tahun Beroperasi</p>
                     </div>
@@ -50,17 +50,17 @@
                     </p>
                 
                 <div class="flex flex-wrap justify-center md:justify-between gap-6 mt-8">
-                        <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                        <div class="text-center p-4 rounded-lg flex-1 min-w-[150px]">
                             <h3 class="text-2xl font-bold text-red-600">100.000+</h3>
                             <p class="text-gray-600">Pelanggan</p>
                         </div>
 
-                        <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                        <div class="text-center p-4  rounded-lg flex-1 min-w-[150px]">
                             <h3 class="text-2xl font-bold text-red-600">10.000+</h3>
                             <p class="text-gray-600">Produk</p>
                         </div>
 
-                        <div class="text-center p-4 bg-gray-50 rounded-lg flex-1 min-w-[150px]">
+                        <div class="text-center p-4  rounded-lg flex-1 min-w-[150px]">
                             <h3 class="text-2xl font-bold text-red-600">5+</h3>
                             <p class="text-gray-600">Tahun Beroperasi</p>
                         </div>

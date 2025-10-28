@@ -14,6 +14,7 @@ class Product extends Model
         'product_description',
         'product_price',
         'product_discount',
+        'discount_type',
         'category_id',
     ];
 
@@ -51,14 +52,40 @@ class Product extends Model
 
     /**
      * Accessor untuk menghitung harga setelah diskon.
-     * Ini lebih baik daripada menyimpannya di database.
+     * Mendukung diskon persentase (%) dan diskon nominal (Rp).
      */
     public function getProductPriceAfterDiscountAttribute()
     {
         if ($this->product_discount > 0) {
-            return $this->product_price - ($this->product_price * $this->product_discount / 100);
+            if ($this->discount_type === 'percentage') {
+                // Diskon persentase
+                return $this->product_price - ($this->product_price * $this->product_discount / 100);
+            } else {
+                // Diskon fixed/nominal
+                return max(0, $this->product_price - $this->product_discount);
+            }
         }
         return $this->product_price;
+    }
+
+    /**
+     * Accessor untuk mendapatkan persentase diskon.
+     * Jika discount_type adalah 'percentage', return nilai discount.
+     * Jika discount_type adalah 'fixed', hitung persentase dari nominal discount.
+     */
+    public function getDiscountPercentageAttribute()
+    {
+        if ($this->product_discount <= 0 || $this->product_price <= 0) {
+            return 0;
+        }
+
+        if ($this->discount_type === 'percentage') {
+            return round($this->product_discount, 0);
+        } else {
+            // Hitung persentase dari nominal discount
+            $percentage = ($this->product_discount / $this->product_price) * 100;
+            return round($percentage, 0);
+        }
     }
 
 

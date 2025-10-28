@@ -25,7 +25,7 @@
                     <!-- Discount Badge -->
                     @if($product->product_discount > 0)
                         <div class="absolute bg-red-600 text-white px-4 py-2 rounded-full text-sm font-bold shadow-lg z-10" style="top: 16px; left: 16px;">
-                            Save {{ $product->product_discount }}%
+                            Save {{ $product->discount_percentage }}%
                         </div>
                     @endif
                 </div>
@@ -73,11 +73,8 @@
                 <!-- Price Section -->
                 <div class="border-t border-b border-gray-200 py-4">
                     @php
-                        $finalPrice = $product->product_price;
+                        $finalPrice = $product->product_price_after_discount;
                         $hasDiscount = $product->product_discount > 0;
-                        if ($hasDiscount) {
-                            $finalPrice = $product->product_price - ($product->product_price * $product->product_discount / 100);
-                        }
                     @endphp
 
                     @if($hasDiscount)
@@ -90,7 +87,7 @@
                             </span>
                         </div>
                         <p class="mt-2 text-sm text-green-600 font-medium">
-                            Kamu hemat Rp {{ number_format($product->product_price - $finalPrice, 0, ',', '.') }} ({{ $product->product_discount }}%)
+                            Kamu hemat Rp {{ number_format($product->product_price - $finalPrice, 0, ',', '.') }} ({{ $product->discount_percentage }}%)
                         </p>
                     @else
                         <span class="text-3xl sm:text-4xl font-bold text-gray-900">

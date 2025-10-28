@@ -89,7 +89,7 @@
             </div>
 
             <!-- Price Information -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
                     <label for="product_price" class="block text-sm font-medium text-gray-700">Base Price (Rp)</label>
                     <input type="number" name="product_price" id="product_price" value="{{ old('product_price') }}"
@@ -101,10 +101,23 @@
                 </div>
 
                 <div>
-                    <label for="product_discount" class="block text-sm font-medium text-gray-700">Discount (%)</label>
-                    <input type="number" name="product_discount" id="product_discount" value="{{ old('product_discount', 0) }}" min="0" max="100"
+                    <label for="discount_type" class="block text-sm font-medium text-gray-700">Discount Type</label>
+                    <select name="discount_type" id="discount_type" 
+                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                        onchange="updateDiscountLabel()">
+                        <option value="percentage" {{ old('discount_type') == 'percentage' ? 'selected' : '' }}>Percentage (%)</option>
+                        <option value="fixed" {{ old('discount_type') == 'fixed' ? 'selected' : '' }}>Fixed Amount (Rp)</option>
+                    </select>
+                    <p class="mt-1 text-xs text-gray-500">Pilih jenis diskon yang ingin diterapkan.</p>
+                </div>
+
+                <div>
+                    <label for="product_discount" class="block text-sm font-medium text-gray-700">
+                        <span id="discount_label">Discount (%)</span>
+                    </label>
+                    <input type="number" name="product_discount" id="product_discount" value="{{ old('product_discount', 0) }}" min="0"
                         class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
-                    <p class="mt-1 text-xs text-gray-500">Diskon akan berlaku untuk semua varian kecuali yang memiliki harga khusus.</p>
+                    <p class="mt-1 text-xs text-gray-500" id="discount_hint">Diskon akan berlaku untuk semua varian kecuali yang memiliki harga khusus.</p>
                 </div>
             </div>
 
@@ -163,6 +176,24 @@
 
     @push('scripts')
     <script>
+    // Update discount label based on discount type
+    function updateDiscountLabel() {
+        const discountType = document.getElementById('discount_type').value;
+        const discountLabel = document.getElementById('discount_label');
+        const discountInput = document.getElementById('product_discount');
+        const discountHint = document.getElementById('discount_hint');
+        
+        if (discountType === 'percentage') {
+            discountLabel.textContent = 'Discount (%)';
+            discountInput.setAttribute('max', '100');
+            discountHint.textContent = 'Masukkan nilai persentase diskon (0-100%).';
+        } else {
+            discountLabel.textContent = 'Discount (Rp)';
+            discountInput.removeAttribute('max');
+            discountHint.textContent = 'Masukkan nilai nominal diskon dalam Rupiah.';
+        }
+    }
+
     // Alpine.js Component untuk Category Selector
     function categorySelector() {
         return {
@@ -196,6 +227,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // Initialize discount label on page load
+        updateDiscountLabel();
+
         const variantsContainer = document.getElementById('variants-container');
         const noVariantsText = document.getElementById('no-variants');
         const addVariantBtn = document.getElementById('addVariant');

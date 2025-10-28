@@ -1,9 +1,6 @@
 @php
-    $finalPrice = $product->product_price;
+    $finalPrice = $product->product_price_after_discount;
     $hasDiscount = $product->product_discount > 0;
-    if ($hasDiscount) {
-        $finalPrice = $product->product_price - ($product->product_price * $product->product_discount / 100);
-    }
 @endphp
 
 <div class="overflow-hidden duration-300 group">
@@ -25,7 +22,7 @@
             <!-- Discount Badge (Top-Left) -->
             @if($hasDiscount)
                 <div class="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold shadow-lg">
-                    Save {{ $product->product_discount }}%
+                    Save {{ $product->discount_percentage }}%
                 </div>
             @endif
         </div>

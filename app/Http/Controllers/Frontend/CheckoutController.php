@@ -23,7 +23,6 @@ class CheckoutController extends Controller
             'postal_code' => 'required|string|max:10',
         ]);
 
-        // Get cart from session
         $cart = session()->get('cart', []);
         
         if (empty($cart)) {
@@ -31,7 +30,6 @@ class CheckoutController extends Controller
                 ->with('error', 'Your cart is empty');
         }
 
-        // Calculate total and prepare items
         $total = 0;
         $items = [];
         $orderItemsData = [];
@@ -39,18 +37,19 @@ class CheckoutController extends Controller
         foreach ($cart as $id => $item) {
             $product = Product::find($item['product_id']);
             if (!$product) continue;
-
-            $price = $item['variant_price'] ?? $product->product_price;
-            
-            // Apply discount
+            $basePrice = $item['variant_price'] ?? $product->product_price;
+            $price = $basePrice;
             if ($product->product_discount > 0) {
-                $price = $price - ($price * $product->product_discount / 100);
+                if ($product->discount_type === 'percentage') {
+                    $price = $basePrice - ($basePrice * $product->product_discount / 100);
+                } else {
+                    $price = max(0, $basePrice - $product->product_discount);
+                }
             }
 
             $subtotal = $price * $item['quantity'];
             $total += $subtotal;
 
-            // For WhatsApp message
             $items[] = [
                 'name' => $product->product_name,
                 'size' => $item['size'] ?? '-',

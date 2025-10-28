@@ -9,9 +9,7 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    /**
-     * Display shopping cart
-     */
+   
     public function index()
     {
         $cart = session()->get('cart', []);
@@ -22,11 +20,18 @@ class CartController extends Controller
             $product = Product::with('images')->find($item['product_id']);
             
             if ($product) {
-                $price = $item['variant_price'] ?? $product->product_price;
+                // Use variant price if exists, otherwise use base price
+                $basePrice = $item['variant_price'] ?? $product->product_price;
                 
-                // Apply discount
+                // Apply discount to the base price
+                $price = $basePrice;
                 if ($product->product_discount > 0) {
-                    $price = $price - ($price * $product->product_discount / 100);
+                    if ($product->discount_type === 'percentage') {
+                        $price = $basePrice - ($basePrice * $product->product_discount / 100);
+                    } else {
+                        // Fixed discount
+                        $price = max(0, $basePrice - $product->product_discount);
+                    }
                 }
                 
                 $subtotal = $price * $item['quantity'];
@@ -48,9 +53,7 @@ class CartController extends Controller
         return view('frontend.cart.index', compact('cartItems', 'total'));
     }
 
-    /**
-     * Add product to cart
-     */
+
     public function add(Request $request)
     {
         $request->validate([
@@ -65,32 +68,25 @@ class CartController extends Controller
         $variant = null;
         $variantPrice = null;
 
-        // Check if variant selected
         if ($request->variant_id) {
             $variant = ProductVariant::findOrFail($request->variant_id);
             
-            // Check stock
             if ($variant->stock < $request->quantity) {
                 return back()->with('error', '❌ Stok tidak cukup! Stok tersedia: ' . $variant->stock . ' item');
             }
             
-            // Use variant price if exists
             $variantPrice = $variant->price_override ?? $product->product_price;
         } else {
-            // If no variant selected but product has variants, show error
             $hasVariants = ProductVariant::where('product_id', $request->product_id)->exists();
             if ($hasVariants) {
                 return back()->with('error', '⚠️ Silakan pilih ukuran dan warna terlebih dahulu!');
             }
         }
 
-        // Create unique cart ID (product_id + variant_id if exists)
         $cartId = $request->product_id . '-' . ($request->variant_id ?? 'default');
 
-        // Get cart from session
         $cart = session()->get('cart', []);
 
-        // If item already exists in cart, update quantity
         if (isset($cart[$cartId])) {
             $cart[$cartId]['quantity'] += $request->quantity;
             $message = '✅ Produk berhasil ditambahkan! Jumlah di keranjang: ' . $cart[$cartId]['quantity'];
@@ -107,16 +103,13 @@ class CartController extends Controller
             $message = '✅ Produk berhasil ditambahkan ke keranjang!';
         }
 
-        // Save cart to session
         session()->put('cart', $cart);
-        session()->save(); // Force save session before redirect
+        session()->save(); 
 
         return redirect()->route('frontend.cart.index')->with('success', $message);
     }
 
-    /**
-     * Update cart item quantity
-     */
+
     public function update(Request $request, $id)
     {
         $request->validate([

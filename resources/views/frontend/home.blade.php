@@ -20,7 +20,7 @@
                    aria-label="Belanja Sekarang">
                     Belanja Sekarang
                 </a>
-                <a href="#catalog" 
+                <a href="{{ route('frontend.catalog.index') }}" 
                    class="w-full sm:w-auto px-8 py-4 rounded-full border-2 border-red-700 text-red-700 font-medium hover:bg-red-700 hover:text-white transition-colors text-center focus:outline-none focus:ring-4 focus:ring-red-200"
                    aria-label="Lihat catalog">
                     Lihat Catalog
@@ -30,21 +30,22 @@
 
         <!-- Right Image Grid -->
         <div class="w-full lg:w-7/12 mt-8 lg:mt-0">
-            <div class="grid grid-cols-4 gap-3 md:gap-4">
+            <!-- Mobile: stacked images, md+: grid as before -->
+            <div class="flex flex-col gap-3 md:grid md:grid-cols-4 md:gap-4">
                 <!-- Main large image -->
-                <div class="col-span-3">
+                <div class="order-1 md:order-none md:col-span-3">
                     <img src="{{ asset('images/image_hero1.png') }}" 
                          alt="Outfit utama Stiego" loading="lazy"
-                         class="w-full h-[250px] sm:h-[300px] md:h-[350px] lg:h-[400px] object-cover rounded-lg shadow-lg">
+                         class="w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[400px] object-cover rounded-lg shadow-lg">
                 </div>
                 <!-- Two smaller images -->
-                <div class="space-y-3 md:space-y-4">
+                <div class="flex flex-row gap-3 md:flex-col md:space-y-4 md:gap-0 md:space-y-4 md:col-span-1">
                     <img src="{{ asset('images/image_hero2.png') }}"
                          alt="Outfit tambahan 1" loading="lazy"
-                         class="w-full h-[120px] sm:h-[145px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
+                         class="w-1/2 md:w-full h-[95px] sm:h-[120px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
                     <img src="{{ asset('images/image_hero3.png') }}"
                          alt="Outfit tambahan 2" loading="lazy"
-                         class="w-full h-[120px] sm:h-[145px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
+                         class="w-1/2 md:w-full h-[95px] sm:h-[120px] md:h-[170px] lg:h-[190px] object-cover rounded-lg shadow-md">
                 </div>
             </div>
         </div>
@@ -206,7 +207,7 @@
     </section>
 
     <!-- Cara Order -->
-    <section class="py-12 bg-white" aria-labelledby="caraorder-heading">
+    <section class="py-12" aria-labelledby="caraorder-heading">
         <div class="container mx-auto">
             <h2 id="caraorder-heading" class="text-2xl md:text-3xl font-bold text-center mb-6">Cara Order</h2>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -246,7 +247,7 @@
     </section>
 
     <!-- Testimonials Section -->
-    <section class="py-16 bg-white" 
+    <section class="py-16" 
              x-data="testimonialMarquee({{ json_encode($testimonials) }})" 
              x-init="startAutoplay()">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

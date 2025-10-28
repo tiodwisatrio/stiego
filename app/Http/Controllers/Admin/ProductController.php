@@ -68,7 +68,8 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'product_description' => 'required|string',
             'product_price' => 'required|numeric|min:0',
-            'product_discount' => 'nullable|integer|min:0|max:100',
+            'product_discount' => 'nullable|integer|min:0',
+            'discount_type' => 'required|in:percentage,fixed',
             'category_id' => 'required|exists:categories,id',
             'variant_size' => 'nullable|array',
             'variant_color' => 'nullable|array',
@@ -78,8 +79,15 @@ class ProductController extends Controller
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048'
         ], [
             'category_id.required' => 'Please select a sub-category for this product.',
-            'category_id.exists' => 'The selected sub-category does not exist.'
+            'category_id.exists' => 'The selected sub-category does not exist.',
+            'discount_type.required' => 'Please select a discount type.',
+            'discount_type.in' => 'Invalid discount type selected.'
         ]);
+
+        // Validate discount based on type
+        if ($request->discount_type === 'percentage' && $request->product_discount > 100) {
+            return back()->withErrors(['product_discount' => 'Percentage discount cannot exceed 100%.'])->withInput();
+        }
 
         $product = Product::create($request->all());
 
@@ -130,7 +138,8 @@ class ProductController extends Controller
             'product_name' => 'required|string|max:255',
             'product_description' => 'required|string',
             'product_price' => 'required|numeric|min:0',
-            'product_discount' => 'nullable|integer|min:0|max:100',
+            'product_discount' => 'nullable|integer|min:0',
+            'discount_type' => 'required|in:percentage,fixed',
             'category_id' => 'required|exists:categories,id',
             'variant_size' => 'nullable|array',
             'variant_color' => 'nullable|array',
@@ -138,7 +147,15 @@ class ProductController extends Controller
             'variant_price_override' => 'nullable|array',
             'new_images' => 'nullable|array',
             'new_images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+        ], [
+            'discount_type.required' => 'Please select a discount type.',
+            'discount_type.in' => 'Invalid discount type selected.'
         ]);
+
+        // Validate discount based on type
+        if ($request->discount_type === 'percentage' && $request->product_discount > 100) {
+            return back()->withErrors(['product_discount' => 'Percentage discount cannot exceed 100%.'])->withInput();
+        }
 
         // Update data utama produk
         $product->update([
@@ -146,6 +163,7 @@ class ProductController extends Controller
             'product_description' => $request->product_description,
             'product_price' => $request->product_price,
             'product_discount' => $request->product_discount,
+            'discount_type' => $request->discount_type,
             'category_id' => $request->category_id,
         ]);
 

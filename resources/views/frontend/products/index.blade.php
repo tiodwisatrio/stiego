@@ -11,10 +11,10 @@
         </div> -->
 
         <!-- Filter & Search Section -->
-<div 
-    x-data="{ open: false }" 
-    class="rounded-lg shadow-sm p-4 sm:p-6 mb-6"
->
+    <div 
+        x-data="{ open: false }" 
+        class="rounded-lg shadow-sm p-4 sm:p-6 mb-6"
+    >
     <!-- Mobile Toggle Button -->
     <div class="flex justify-between items-center sm:hidden">
         <h2 class="text-base font-semibold text-gray-800">Filter & Sort</h2>
@@ -127,11 +127,8 @@
         <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
             @forelse ($products as $product)
                 @php
-                    $finalPrice = $product->product_price;
+                    $finalPrice = $product->product_price_after_discount;
                     $hasDiscount = $product->product_discount > 0;
-                    if ($hasDiscount) {
-                        $finalPrice = $product->product_price - ($product->product_price * $product->product_discount / 100);
-                    }
                 @endphp
 
                 <div class="overflow-hidden duration-300 group">
@@ -153,7 +150,7 @@
                             <!-- Discount Badge (Top-Left) -->
                             @if($hasDiscount)
                                 <div class="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1.5 rounded-full text-xs font-bold shadow-lg">
-                                    Save {{ $product->product_discount }}%
+                                    Save {{ $product->discount_percentage }}%
                                 </div>
                             @endif
                         </div>
@@ -172,7 +169,7 @@
 
                         <!-- Category Badge -->
                         @if($product->category)
-                            <p class="text-gray-500 mt-3 mb-1 sm:text-xs lg:text-sm" style="font-size: 12px;">
+                            <p class="text-gray-500 mt-3 mb-1 sm:text-xs lg:text-sm truncate" style="font-size: 12px;" title="@if($product->category->parent){{ $product->category->parent->category_name }} • @endif{{ $product->category->category_name }}">
                                 @if($product->category->parent)
                                     {{ $product->category->parent->category_name }} • 
                                 @endif
